@@ -1,0 +1,27 @@
+// models and connection strings would go here
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  email     String  @unique
+  firstName String?
+  lastName  String?
+}
+
+model Recipe {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  ingredients  String[]
+  instructions String[]
+  tastes       String[]
+  mealType     String?
+  userId       String?  @db.ObjectId
+}
