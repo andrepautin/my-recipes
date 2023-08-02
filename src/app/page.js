@@ -2,14 +2,28 @@
 
 import Link from "next/link";
 import { currentUserContext } from "./context/userContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { CircularProgress } from "@mui/material";
 export default function Home() {
   const [currentUser, setCurrentUser] = useContext(currentUserContext);
+  const [hasMounted, setHasMounted] = useState(false);
 
-  useEffect(() => {});
+  useEffect(() => {
+    if (!hasMounted) {
+      setHasMounted(true);
+    }
+  }, [hasMounted]);
+
+  if (!hasMounted) {
+    return (
+      <div className="flex justify-center mt-32">
+        <CircularProgress />
+      </div>
+    );
+  }
+
   return (
     <div className="mt-5">
-      {currentUser && <h1>LOGGED IN</h1>}
       {!currentUser && (
         <>
           <h1 className="text-center">

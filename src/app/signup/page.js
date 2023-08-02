@@ -54,7 +54,7 @@ export default function SignUp() {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       setCurrentUser(user);
-      router.push("/");
+      router.push(`/${user?.id}/dashboard`);
     } catch (error) {
       console.log(error);
     }

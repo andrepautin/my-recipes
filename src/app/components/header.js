@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { currentUserContext } from "../context/userContext";
 import NavMenu from "./navmenu";
@@ -9,7 +9,15 @@ import { useHelper } from "../utils/utils";
 const MENU_OPTIONS = ["Recipes", "Profile", "Logout"];
 export default function Header() {
   const [currentUser, setCurrentUser] = useContext(currentUserContext);
+  const [hasMounted, setHasMounted] = useState(false);
   const { handleLogout } = useHelper();
+
+  useEffect(() => {
+    if (!hasMounted) {
+      setHasMounted(true);
+    }
+  }, [hasMounted]);
+  if (!hasMounted) return null;
 
   const handleMenuItemClicked = (evt) => {
     evt.preventDefault();
@@ -20,7 +28,10 @@ export default function Header() {
   };
   return (
     <h1 className="bg-amber-600 text-orange-300 w-full h-16 flex items-center text-2xl">
-      <Link href="/" className="ml-3">
+      <Link
+        href={currentUser ? `/${currentUser?.id}/dashboard` : "/"}
+        className="ml-3"
+      >
         MyRecipes
       </Link>
       {currentUser && (

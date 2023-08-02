@@ -17,11 +17,14 @@ model User {
 }
 
 model Recipe {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   ingredients  String[]
   instructions String[]
   tastes       String[]
+  type         String?
   mealType     String?
-  userId       String?  @db.ObjectId
+  userId       String?   @db.ObjectId
+  dateCreated  DateTime?
+  dateUpdated  DateTime?
 }

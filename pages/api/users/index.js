@@ -9,7 +9,6 @@ import { validateToken } from "../../../lib/utils/authUtils";
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
-    console.log("HITTING POST");
     try {
       const data = req.body;
       if (data.email) {
@@ -44,9 +43,9 @@ const handler = async (req, res) => {
       const { tokenError } = await validateToken(req);
       if (tokenError) throw new Error(tokenError);
       const userId = req.body.userId;
-      const { user, error } = await deleteUser(userId);
+      const { message, error } = await deleteUser(userId);
       if (error) throw new Error(error);
-      return res.status(201).json({ user });
+      return res.status(201).json({ message });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
