@@ -9,15 +9,7 @@ import { useHelper } from "../utils/utils";
 const MENU_OPTIONS = ["Recipes", "Profile", "Logout"];
 export default function Header() {
   const [currentUser, setCurrentUser] = useContext(currentUserContext);
-  const [hasMounted, setHasMounted] = useState(false);
   const { handleLogout } = useHelper();
-
-  useEffect(() => {
-    if (!hasMounted) {
-      setHasMounted(true);
-    }
-  }, [hasMounted]);
-  if (!hasMounted) return null;
 
   const handleMenuItemClicked = (evt) => {
     evt.preventDefault();

@@ -2,6 +2,7 @@
 import { useContext } from "react";
 import { currentUserContext } from "../context/userContext";
 import { useRouter } from "next/navigation";
+import { deleteCookie } from "cookies-next";
 
 export const useHelper = () => {
   const [currentUser, setCurrentUser] = useContext(currentUserContext);
@@ -9,7 +10,8 @@ export const useHelper = () => {
   const router = useRouter();
 
   const handleLogout = () => {
-    localStorage.clear();
+    deleteCookie("currentUser");
+    deleteCookie("token");
     setCurrentUser();
     router.push("/");
   };

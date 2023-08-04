@@ -7,18 +7,25 @@ import {
 
 import { validateToken } from "../../../lib/utils/authUtils";
 
-const handler = async (req, res) => {
+import { cookies } from "next/headers";
+import { setCookie } from "cookies-next";
+
+export const handler = async (req, res) => {
   if (req.method === "POST") {
     try {
       const data = req.body;
       if (data.email) {
         const { user, token, error } = await createUser(data);
         if (error) throw new Error(error);
+        setCookie("currentUser", user, { req, res });
+        setCookie("token", token, { req, res });
         return res.status(201).json({ user, token });
       }
 
       const { user, token, error } = await loginUser(data);
       if (error) throw new Error(error);
+      setCookie("currentUser", user, { req, res });
+      setCookie("token", token, { req, res });
       return res.status(201).json({ user, token });
     } catch (error) {
       return res.status(500).json({ error: error.message });

@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { currentUserContext } from "../context/userContext";
 import { useHelper } from "../utils/utils";
 import { CircularProgress } from "@mui/material";
+import { getCookie } from "cookies-next";
 
 const FORM_OPTIONS = [
   "firstName",
@@ -19,7 +20,6 @@ const FORM_OPTIONS = [
 
 export default function SignUp() {
   const [currentUser, setCurrentUser] = useContext(currentUserContext);
-  const [hasMounted, setHasMounted] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -33,11 +33,6 @@ export default function SignUp() {
   const router = useRouter();
   const { handleFormChange } = useHelper();
 
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-  if (!hasMounted) return null;
-
   const handleChange = (evt) => {
     handleFormChange(evt, setFormData);
   };
@@ -49,12 +44,10 @@ export default function SignUp() {
         throw new Error("Passwords do not match.");
       delete formData.confirmPassword;
       setIsLoading(true);
-      const response = await axios.post("/api/users", formData);
-      const { user, token } = response.data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
+      await axios.post("/api/users", formData);
+      const user = getCookie("currentUser");
       setCurrentUser(user);
-      router.push(`/${user?.id}/dashboard`);
+      router.push(`/dashboard`);
     } catch (error) {
       console.log(error);
     }

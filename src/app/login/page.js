@@ -8,6 +8,8 @@ import { currentUserContext } from "../context/userContext";
 import { useHelper } from "../utils/utils";
 import { CircularProgress } from "@mui/material";
 
+import { getCookie, setCookie } from "cookies-next";
+
 const FORM_OPTIONS = ["userName", "password"];
 
 export default function Login() {
@@ -32,12 +34,10 @@ export default function Login() {
     evt.preventDefault();
     try {
       setIsLoading(true);
-      const response = await axios.post("/api/users", formData);
-      const { user, token } = response.data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-      setCurrentUser(user);
-      router.push(`/${user?.id}/dashboard`);
+      await axios.post(`/api/users`, formData);
+      const currentUser = getCookie("currentUser");
+      setCurrentUser(currentUser);
+      router.push("/dashboard");
     } catch (error) {
       console.log(error);
     }
