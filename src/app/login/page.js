@@ -35,7 +35,7 @@ export default function Login() {
     try {
       setIsLoading(true);
       await axios.post(`/api/users`, formData);
-      const currentUser = getCookie("currentUser");
+      const currentUser = JSON.parse(getCookie("currentUser"));
       setCurrentUser(currentUser);
       router.push("/dashboard");
     } catch (error) {

@@ -15,14 +15,13 @@ async function getRecipe(recipeId) {
 
 export default async function RecipeDetail({ params }) {
   const { recipe } = await getRecipe(params.recipeId);
-  console.log("RECIPE--->", recipe);
   return (
     <div>
       <h1 className="text-5xl">{recipe?.name}</h1>
       <div>
         <h1 className="text-xl">Ingredients</h1>
         <ul>
-          {recipe.ingredients.map((ing) => (
+          {recipe?.ingredients?.map((ing) => (
             <li key={ing}>{ing}</li>
           ))}
         </ul>

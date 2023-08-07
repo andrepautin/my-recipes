@@ -45,7 +45,7 @@ export default function SignUp() {
       delete formData.confirmPassword;
       setIsLoading(true);
       await axios.post("/api/users", formData);
-      const user = getCookie("currentUser");
+      const user = JSON.parse(getCookie("currentUser"));
       setCurrentUser(user);
       router.push(`/dashboard`);
     } catch (error) {

@@ -9,33 +9,30 @@ async function getRecentRecipes() {
   const headers = { authorization: "Bearer " + token };
 
   try {
-    const createdRes = await axios.get(
-      `${process.env.BASE_URL}/api/${currentUser?.id}/recipes/recentlycreated`,
+    const recipesData = await axios.get(
+      `${process.env.BASE_URL}/api/${currentUser?.id}/recipes/recent`,
       { headers }
     );
-    const updatedRes = await axios.get(
-      `${process.env.BASE_URL}/api/${currentUser?.id}/recipes/recentlyupdated`,
-      { headers }
-    );
-    const created = createdRes.data.recipes;
-    const updated = updatedRes.data.recipes;
-    return { created, updated };
+    const recentlyCreated = recipesData.data.recentlyCreated;
+    const recentlyUpdated = recipesData.data.recentlyUpdated;
+    return { recentlyCreated, recentlyUpdated };
   } catch (error) {
     console.log("ERR--->", error);
+    return { error };
   }
 }
 
 export default async function Dashboard() {
-  const { created, updated, error } = await getRecentRecipes();
+  const { recentlyCreated, recentlyUpdated, error } = await getRecentRecipes();
   return (
     <div>
       <div>
         <h1 className="text-center">Recently Created Recipes</h1>
-        <RecipeCardList recipes={created} />
+        <RecipeCardList recipes={recentlyCreated} />
       </div>
       <div>
         <h1 className="text-center">Recently Updated Recipes</h1>
-        <RecipeCardList recipes={updated} />
+        <RecipeCardList recipes={recentlyUpdated} />
       </div>
     </div>
   );

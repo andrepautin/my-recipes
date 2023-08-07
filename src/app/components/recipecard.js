@@ -1,15 +1,7 @@
-import { Card, CardActionArea, CardContent } from "@mui/material";
+import { Card, CardContent } from "@mui/material";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 export default function RecipeCard({ recipe }) {
-  // const router = useRouter();
-  // const handleClick = (evt) => {
-  //   evt.preventDefault();
-  //   router.push({
-  //     pathname: `/recipe/${recipe?.id}`,
-  //   });
-  // };
   return (
     <Link href={`/recipe/${recipe?.id}`}>
       <Card
