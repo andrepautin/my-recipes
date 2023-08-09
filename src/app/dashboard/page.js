@@ -25,6 +25,7 @@ async function getRecentRecipes() {
 export default async function Dashboard() {
   const { recentlyCreated, recentlyUpdated, error } = await getRecentRecipes();
   return (
+    // BUTTON AT BOTTOM THAT LINKS TO ADD NEW RECIPE FORM
     <div>
       <div>
         <h1 className="text-center">Recently Created Recipes</h1>

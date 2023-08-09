@@ -1,3 +1,6 @@
+import IngredientsList from "@/app/components/ingredientslist";
+import InstructionsList from "@/app/components/instructionslist";
+import TastesList from "@/app/components/tasteslist";
 import axios from "axios";
 import { cookies } from "next/headers";
 
@@ -15,17 +18,13 @@ async function getRecipe(recipeId) {
 
 export default async function RecipeDetail({ params }) {
   const { recipe } = await getRecipe(params.recipeId);
+  console.log("RECIPE--->", recipe);
   return (
     <div>
-      <h1 className="text-5xl">{recipe?.name}</h1>
-      <div>
-        <h1 className="text-xl">Ingredients</h1>
-        <ul>
-          {recipe?.ingredients?.map((ing) => (
-            <li key={ing}>{ing}</li>
-          ))}
-        </ul>
-      </div>
+      <h1 className="text-5xl mb-5">{recipe?.name}</h1>
+      <TastesList tastes={recipe?.tastes} />
+      <IngredientsList ingredients={recipe?.ingredients} />
+      <InstructionsList instructions={recipe?.instructions} />
     </div>
   );
 }
