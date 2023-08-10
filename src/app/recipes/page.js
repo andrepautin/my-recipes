@@ -9,6 +9,8 @@ export default function Recipes() {
   const [allRecipes, setAllRecipes] = useState();
   const [currentUser, setcurrentUser] = useContext(currentUserContext);
   const [sortBy, setSortBy] = useState("desc");
+  const [sortedRecipes, setSortedRecipes] = useState();
+  const [sortActive, setSortActive] = useState(false);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState("");
   console.log("RECIPES SET--->", allRecipes);
@@ -30,40 +32,43 @@ export default function Recipes() {
     getAllRecipes();
   }, [currentUser]);
 
-  const handleSort = (evt) => {
-    evt.preventDefault();
-    if (sortBy === "asc") {
+  useEffect(() => {
+    if (sortActive && sortBy === "asc") {
       const ascRecipes = allRecipes?.sort(
         (a, b) => new Date(a.dateCreated) - new Date(b.dateCreated)
       );
-      setSortBy("desc");
       setAllRecipes([...ascRecipes]);
-    } else {
+    } else if (sortActive && sortBy === "desc") {
       const descRecipes = allRecipes?.sort(
         (a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)
       );
-      setSortBy("asc");
       setAllRecipes([...descRecipes]);
     }
+    setSortActive(false);
+  }, [sortBy, allRecipes, sortActive]);
+
+  const handleSort = (evt) => {
+    evt.preventDefault();
+    sortBy === "asc" ? setSortBy("desc") : setSortBy("asc");
+    setSortActive(true);
   };
 
   return (
-    // WILL HAVE TO BE CLIENT SIDE COMPONENT AND FETCH RESULTS IN USEEFFECT
     // TOOLBAR COMPONENT
     // LIST ITEMS WILL HAVE EDIT, DELETE FUNCTIONALITIES
     // CONTAINER THAT RENDERS LIST OF ALL RECIPES
-    // LIST COMPONENT STILL ITS OWN
     // WILL HANDLE SEARCH, FILTER/SORT
     // USER SHOULD BE ABLE TO FILTER BY TYPE (FOOD, DRINK),
     // MEAL TYPE (BFAST, LUNCH, DINNER, SNACK) AND SEARCH BY NAME
     // SORT ALPHABETICALLY
-    // SHOULD BE ABLE TO DElETE FROM THIS COMP AS WELL
     // IF ITEM CLICKED, SHOULD GO TO DETAIL PAGE FOR THAT RECIPE (INDEX WILL BE PART OF INDIVIDUAL COMP)
     <div>
       {allRecipes && (
         <div>
           <button onClick={handleSort}>Sort</button>
-          <AllRecipesList recipes={allRecipes} />
+          <AllRecipesList
+            recipes={sortedRecipes ? sortedRecipes : allRecipes}
+          />
         </div>
       )}
     </div>
