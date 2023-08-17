@@ -20,6 +20,8 @@ export default function Header() {
       handleLogout();
     } else if (target === "Recipes") {
       router.push(`/recipes`);
+    } else if (target === "Profile") {
+      router.push(`/profile`);
     }
   };
   return (
