@@ -6,6 +6,7 @@ import { currentUserContext } from "../context/userContext";
 import NavMenu from "./navmenu";
 import { useHelper } from "../utils/utils";
 import { useRouter } from "next/navigation";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
 
 const MENU_OPTIONS = ["Recipes", "Profile", "Logout"];
 export default function Header() {
@@ -28,6 +29,7 @@ export default function Header() {
     <div className="bg-amber-600 text-orange-300 w-full h-16 flex items-center text-2xl">
       <Link href={currentUser ? `/dashboard` : "/"} className="ml-3">
         MyRecipes
+        <RestaurantIcon />
       </Link>
       {currentUser && (
         <NavMenu

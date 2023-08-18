@@ -1,6 +1,7 @@
 import axios from "axios";
 import RecipeCardList from "@/app/components/recipecardlist";
 import { cookies } from "next/headers";
+import Link from "next/link";
 
 async function getRecentRecipes() {
   const nextCookies = cookies();
@@ -25,7 +26,6 @@ async function getRecentRecipes() {
 export default async function Dashboard() {
   const { recentlyCreated, recentlyUpdated, error } = await getRecentRecipes();
   return (
-    // BUTTON AT BOTTOM THAT LINKS TO ADD NEW RECIPE FORM
     <div>
       <div>
         <h1 className="text-center">Recently Created Recipes</h1>
@@ -34,6 +34,9 @@ export default async function Dashboard() {
       <div>
         <h1 className="text-center">Recently Updated Recipes</h1>
         <RecipeCardList recipes={recentlyUpdated} />
+      </div>
+      <div className="text-center mt-5">
+        <Link href="/newrecipe">Add a New Recipe</Link>
       </div>
     </div>
   );

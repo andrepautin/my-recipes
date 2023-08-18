@@ -6,9 +6,9 @@ import { useContext, useEffect, useState } from "react";
 
 import { currentUserContext } from "../context/userContext";
 import { useHelper } from "../utils/utils";
-import { CircularProgress } from "@mui/material";
+import { Alert, CircularProgress } from "@mui/material";
 
-import { getCookie, setCookie } from "cookies-next";
+import { getCookie } from "cookies-next";
 
 const FORM_OPTIONS = ["userName", "password"];
 
@@ -17,6 +17,7 @@ export default function Login() {
   const [hasMounted, setHasMounted] = useState(false);
   const [formData, setFormData] = useState({ userName: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const router = useRouter();
   const { handleFormChange } = useHelper();
@@ -25,6 +26,9 @@ export default function Login() {
     setHasMounted(true);
   }, []);
   if (!hasMounted) return null;
+  if (hasMounted && currentUser) {
+    router.push("/dashboard");
+  }
 
   const handleChange = (evt) => {
     handleFormChange(evt, setFormData);
@@ -32,19 +36,26 @@ export default function Login() {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    try {
-      setIsLoading(true);
-      await axios.post(`/api/users`, formData);
+    setIsLoading(true);
+    const response = await axios.post(`/api/users`, formData);
+    const { user, error } = response.data;
+    if (error) {
+      setIsLoading(false);
+      setError(error);
+    } else {
       const currentUser = JSON.parse(getCookie("currentUser"));
       setCurrentUser(currentUser);
       router.push("/dashboard");
-    } catch (error) {
-      console.log(error);
     }
   };
 
   return (
     <>
+      {error && (
+        <Alert onClose={() => setError(false)} severity="error">
+          {error}
+        </Alert>
+      )}
       {!isLoading ? (
         <div className="flex flex-col mt-10">
           <h1 className="my-5 text-center">

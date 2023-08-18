@@ -45,20 +45,3 @@ export async function PUT(req) {
     return NextResponse({ error: error.message });
   }
 }
-
-// export async function DELETE(req) {
-//   try {
-//     // console.log("REQ--->", await req.json());
-//     console.log(req);
-//     const headersList = headers();
-//     console.log("HEAD DEL--->", headersList);
-//     const { tokenError } = await validateToken(headersList);
-//     if (tokenError) throw new Error(tokenError);
-//     const { userId } = await req.json();
-//     const { message, error } = await deleteUser(userId);
-//     if (error) throw new Error(error);
-//     return NextResponse.json({ message });
-//   } catch (error) {
-//     return new NextResponse({ error: error.message });
-//   }
-// }
