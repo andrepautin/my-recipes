@@ -19,11 +19,14 @@ async function getRecipe(recipeId) {
 export default async function RecipeDetail({ params }) {
   const { recipe } = await getRecipe(params?.recipeId);
   let date = recipe?.dateCreated;
-  date = new Date(date).toLocaleDateString();
+  if (date) {
+    date = new Date(date).toLocaleDateString();
+  }
   return (
     <div>
       <h1 className="text-5xl">{recipe?.name}</h1>
-      <h1 className="text-xl mb-5">Created on: {date}</h1>
+      {date && <h1 className="text-xl mb-5">Created on: {date}</h1>}
+      {/* add type and mealType here */}
       <TastesList tastes={recipe?.tastes} />
       <IngredientsList ingredients={recipe?.ingredients} />
       <InstructionsList instructions={recipe?.instructions} />

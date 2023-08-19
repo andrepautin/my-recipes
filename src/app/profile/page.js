@@ -33,6 +33,8 @@ export default function Profile() {
       },
       { headers }
     );
+    // handle error here
+    // const {user, error} = response.data
     setCurrentUser(response.data.user);
     router.refresh();
   };
@@ -62,10 +64,10 @@ export default function Profile() {
       <form onSubmit={handleUpdate} className="flex flex-col">
         {FORM_OPTIONS.map((option) => (
           <div key={option} className="mb-5">
+            <label>
+              {option[0].toUpperCase() + option.slice(1).toLowerCase()}
+            </label>
             <input
-              placeholder={
-                option[0].toUpperCase() + option.slice(1).toLowerCase()
-              }
               className="border-2 border-zinc-950"
               type={option === "email" ? "email" : "text"}
               id={option}

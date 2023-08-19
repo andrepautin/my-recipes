@@ -1,18 +1,168 @@
-const FORM_OPTIONS = [
-  "name",
-  "ingredients",
-  "instructions",
-  "tastes",
-  "type",
-  "mealType",
-];
+"use client";
+
+import { useContext, useState } from "react";
+import { currentUserContext } from "../context/userContext";
+import { useHelper } from "../utils/utils";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
+
+const FORM_SINGLE_OPTIONS = ["name", "type", "mealType"];
+
+const TYPE_OPTIONS = ["food", "drink"];
+
+const MEAL_TYPE_OPTIONS = ["breakfast", "lunch", "dinner", "snack", "any"];
+
+const FORM_ARRAY_OPTIONS = ["ingredients", "instructions", "tastes"];
 
 export default function NewRecipe() {
-  // name - text
-  // ingredients - array of text fields that can be removed, button to add text field
-  // instructions - same as ingredients, make sure that it's being added to correct state
-  // tastes - same as ingredients and instructions
-  // type - dropdown -> food, drink
-  // mealType -> bfast, lunch, dinner, snack
-  return <h1>New Recipe Form</h1>;
+  const [currentUser, setCurrentUser] = useContext(currentUserContext);
+  const [formData, setFormData] = useState({
+    name: "",
+    ingredients: [""],
+    instructions: [""],
+    tastes: [""],
+    type: "",
+    mealType: "",
+  });
+
+  const { handleFormChange } = useHelper();
+  const router = useRouter();
+
+  const handleOptionAdd = (evt) => {
+    evt.preventDefault();
+    const { name, value } = evt.target;
+    setFormData((oldData) => {
+      return {
+        ...oldData,
+        [name]: [...formData[name], value],
+      };
+    });
+  };
+
+  const handleOptionChange = (evt, index) => {
+    evt.preventDefault();
+    const { name, value } = evt.target;
+    let list = [...formData[name]];
+    list[index] = value;
+    setFormData((oldData) => {
+      return {
+        ...oldData,
+        [name]: [...list],
+      };
+    });
+  };
+
+  const handleRemoveItem = (evt, index) => {
+    evt.preventDefault();
+    const name = evt.target.name;
+    let list = [...formData[name]];
+    list.splice(index, 1);
+    setFormData((oldData) => {
+      return {
+        ...oldData,
+        [name]: [...list],
+      };
+    });
+  };
+
+  const handleChange = (evt) => {
+    handleFormChange(evt, setFormData);
+  };
+
+  const handleSubmit = async (evt) => {
+    evt.preventDefault();
+    const token = getCookie("token");
+    const headers = { authorization: "Bearer " + token };
+    const response = await axios.post(
+      `/api/${currentUser?.id}/recipes`,
+      formData,
+      { headers }
+    );
+    const { recipe, error } = response.data;
+    console.log("R--->", recipe);
+    if (error) {
+      console.log(error);
+    }
+    if (recipe) {
+      router.push(`/recipe/${recipe.id}`);
+    }
+  };
+  return (
+    <form onSubmit={handleSubmit}>
+      {FORM_SINGLE_OPTIONS.map((option) => (
+        <div key={option}>
+          <label>
+            {option[0].toUpperCase() + option.slice(1).toLowerCase()}
+          </label>
+          {option === "name" ? (
+            <input
+              className="border-2 border-zinc-950"
+              name={option}
+              type="text"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          ) : (
+            <select
+              className="border-2 border-zinc-950"
+              name={option === "type" ? "type" : "mealType"}
+              onChange={handleChange}
+              required
+            >
+              {option === "type"
+                ? TYPE_OPTIONS.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))
+                : MEAL_TYPE_OPTIONS.map((mt) => (
+                    <option key={mt} value={mt}>
+                      {mt}
+                    </option>
+                  ))}
+            </select>
+          )}
+        </div>
+      ))}
+      {FORM_ARRAY_OPTIONS.map((option) => (
+        <div key={option}>
+          <label>
+            {option[0].toUpperCase() + option.slice(1).toLowerCase()}
+          </label>
+          <div>
+            {formData[option].map((ing, index) => (
+              <div key={index}>
+                <input
+                  className="border-2 border-zinc-950"
+                  name={option}
+                  type="text"
+                  value={formData[option][index]}
+                  onChange={(e) => handleOptionChange(e, index)}
+                  required
+                />
+                {formData[option].length > 1 && (
+                  <button
+                    name={option}
+                    onClick={(e) => handleRemoveItem(e, index)}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+            <div>
+              <button name={option} type="button" onClick={handleOptionAdd}>
+                Add {option[0].toUpperCase() + option.slice(1).toLowerCase()}
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+      <div>
+        <button type="submit">Add Recipe</button>
+      </div>
+    </form>
+  );
 }

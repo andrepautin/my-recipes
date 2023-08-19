@@ -13,7 +13,6 @@ export default function Recipes() {
   const [sortActive, setSortActive] = useState(false);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState("");
-  console.log("RECIPES SET--->", allRecipes);
   useEffect(() => {
     const token = getCookie("token");
     const headers = { authorization: "Bearer " + token };
@@ -63,13 +62,15 @@ export default function Recipes() {
     // SORT ALPHABETICALLY
     // IF ITEM CLICKED, SHOULD GO TO DETAIL PAGE FOR THAT RECIPE (INDEX WILL BE PART OF INDIVIDUAL COMP)
     <div>
-      {allRecipes && (
+      {allRecipes?.length > 0 ? (
         <div>
           <button onClick={handleSort}>Sort</button>
           <AllRecipesList
             recipes={sortedRecipes ? sortedRecipes : allRecipes}
           />
         </div>
+      ) : (
+        <h1>No recipes</h1>
       )}
     </div>
   );
