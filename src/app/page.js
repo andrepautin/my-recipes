@@ -1,5 +1,14 @@
+"use client";
 import Link from "next/link";
+import { useContext } from "react";
+import { currentUserContext } from "./context/userContext";
+import { useRouter } from "next/navigation";
 export default function Home() {
+  const [currentUser, setCurrentUser] = useContext(currentUserContext);
+  const router = useRouter();
+  if (currentUser) {
+    router.push("/dashboard");
+  }
   return (
     <div className="mt-5">
       <>

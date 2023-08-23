@@ -16,15 +16,23 @@ export async function POST(req) {
     if (data.email) {
       const { user, token, error } = await createUser(data);
       if (error) throw new Error(error);
-      cookies().set("currentUser", JSON.stringify(user));
-      cookies().set("token", token);
+      cookies().set("currentUser", JSON.stringify(user), {
+        expires: Date.now() + 120 * 60 * 60 * 1000,
+      });
+      cookies().set("token", token, {
+        expires: Date.now() + 120 * 60 * 60 * 1000,
+      });
       return NextResponse.json({ user, token });
     }
 
     const { user, token, error } = await loginUser(data);
     if (error) throw new Error(error);
-    cookies().set("currentUser", JSON.stringify(user));
-    cookies().set("token", token);
+    cookies().set("currentUser", JSON.stringify(user), {
+      expires: Date.now() + 120 * 60 * 60 * 1000,
+    });
+    cookies().set("token", token, {
+      expires: Date.now() + 120 * 60 * 60 * 1000,
+    });
     return NextResponse.json({ user, token });
   } catch (error) {
     return NextResponse.json({ error: error.message });

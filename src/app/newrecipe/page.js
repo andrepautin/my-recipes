@@ -25,6 +25,7 @@ export default function NewRecipe() {
     type: "",
     mealType: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const { handleFormChange } = useHelper();
   const router = useRouter();
@@ -74,11 +75,13 @@ export default function NewRecipe() {
     evt.preventDefault();
     const token = getCookie("token");
     const headers = { authorization: "Bearer " + token };
+    setLoading(true);
     const response = await axios.post(
       `/api/${currentUser?.id}/recipes`,
       formData,
       { headers }
     );
+    setLoading(false);
     const { recipe, error } = response.data;
     console.log("R--->", recipe);
     if (error) {
@@ -160,9 +163,13 @@ export default function NewRecipe() {
           </div>
         </div>
       ))}
-      <div>
-        <button type="submit">Add Recipe</button>
-      </div>
+      {loading ? (
+        <h1>Adding Recipe...</h1>
+      ) : (
+        <div>
+          <button type="submit">Add Recipe</button>
+        </div>
+      )}
     </form>
   );
 }
