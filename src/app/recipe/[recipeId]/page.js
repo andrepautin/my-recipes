@@ -4,6 +4,7 @@ import InstructionsList from "@/app/components/instructionslist";
 import TastesList from "@/app/components/tasteslist";
 import axios from "axios";
 import { cookies } from "next/headers";
+import Link from "next/link";
 
 async function getRecipe({ recipeId, userId, headers }) {
   const recipeRes = await axios.get(
@@ -30,6 +31,7 @@ export default async function RecipeDetail({ params }) {
 
   return (
     <div>
+      <Link href={`/recipe/${recipe?.id}/edit`}>Edit Recipe</Link>
       <h1 className="text-5xl">{recipe?.name}</h1>
       {date && <h1 className="text-xl mb-5">Created on: {date}</h1>}
       <h1>Type: {recipe?.type}</h1>

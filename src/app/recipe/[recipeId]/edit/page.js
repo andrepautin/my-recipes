@@ -1,38 +1,53 @@
 "use client";
-
-import { useContext, useState } from "react";
-import { currentUserContext } from "../context/userContext";
-import { useHelper } from "../utils/utils";
+import { currentUserContext } from "@/app/context/userContext";
 import axios from "axios";
 import { getCookie } from "cookies-next";
+import { useContext, useEffect, useState } from "react";
+import {
+  FORM_SINGLE_OPTIONS,
+  TYPE_OPTIONS,
+  MEAL_TYPE_OPTIONS,
+  FORM_ARRAY_OPTIONS,
+} from "@/app/newrecipe/page";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useHelper } from "@/app/utils/utils";
 
-export const FORM_SINGLE_OPTIONS = ["name", "type", "mealType"];
-
-export const TYPE_OPTIONS = ["food", "drink"];
-
-export const MEAL_TYPE_OPTIONS = [
-  "breakfast",
-  "lunch",
-  "dinner",
-  "snack",
-  "any",
-];
-
-export const FORM_ARRAY_OPTIONS = ["ingredients", "instructions", "tastes"];
-
-export default function NewRecipe() {
+export default function EditRecipe({ params }) {
   const [currentUser, setCurrentUser] = useContext(currentUserContext);
   const [formData, setFormData] = useState({
     name: "",
     ingredients: [""],
     instructions: [""],
     tastes: [""],
-    type: TYPE_OPTIONS[0],
-    mealType: MEAL_TYPE_OPTIONS[0],
+    type: [],
+    mealType: [],
   });
   const [loading, setLoading] = useState(false);
+  const recipeId = params.recipeId;
+  useEffect(() => {
+    async function getRecipe() {
+      const token = getCookie("token");
+      const headers = { authorization: "Bearer " + token };
+      const response = await axios.get(
+        `/api/${currentUser?.id}/recipes/${recipeId}`,
+        { headers }
+      );
+      const { recipe, error } = response.data;
+      if (error) {
+        console.log("ERROR--->", error);
+      } else {
+        setFormData({
+          name: recipe.name,
+          ingredients: recipe.ingredients,
+          instructions: recipe.instructions,
+          tastes: recipe.tastes,
+          type: recipe.type,
+          mealType: recipe.mealType,
+        });
+      }
+    }
+    getRecipe();
+  }, [currentUser, recipeId]);
 
   const { handleFormChange } = useHelper();
   const router = useRouter();
@@ -83,19 +98,19 @@ export default function NewRecipe() {
     const token = getCookie("token");
     const headers = { authorization: "Bearer " + token };
     setLoading(true);
-    const response = await axios.post(
-      `/api/${currentUser?.id}/recipes`,
+    const response = await axios.put(
+      `/api/${currentUser?.id}/recipes/${recipeId}`,
       formData,
       { headers }
     );
     setLoading(false);
     const { recipe, error } = response.data;
-    console.log("R--->", recipe);
     if (error) {
       console.log(error);
     }
     if (recipe) {
-      router.push(`/recipe/${recipe.id}`);
+      router.refresh();
+      router.push(`/recipe/${recipeId}`);
     }
   };
   return (
@@ -171,10 +186,10 @@ export default function NewRecipe() {
         </div>
       ))}
       {loading ? (
-        <h1>Adding Recipe...</h1>
+        <h1>Updating Recipe...</h1>
       ) : (
         <div>
-          <button type="submit">Add Recipe</button>
+          <button type="submit">Update Recipe</button>
         </div>
       )}
     </form>
