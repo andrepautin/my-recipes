@@ -107,6 +107,7 @@ export default function EditRecipe({ params }) {
     const { recipe, error } = response.data;
     if (error) {
       console.log(error);
+      // need error handling here with alerts
     }
     if (recipe) {
       router.refresh();
