@@ -1,5 +1,6 @@
 import React from "react";
+import CustomLoading from "@/app/components/customloading";
 
 export default function Loading() {
-  return <h1>Loading...</h1>;
+  return <CustomLoading message="Recipe Details" />;
 }

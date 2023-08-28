@@ -1,6 +1,6 @@
 import React from "react";
-export default function Loading() {
-  return <h1>Loading Edit Form...</h1>;
-}
+import CustomLoading from "@/app/components/customloading";
 
-// make all of these custom to the page they are loading
+export default function Loading() {
+  return <CustomLoading message="Recipe Edit Form" />;
+}

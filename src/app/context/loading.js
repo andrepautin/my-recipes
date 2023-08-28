@@ -2,5 +2,5 @@ import React from "react";
 import CustomLoading from "../components/customloading";
 
 export default function Loading() {
-  return <CustomLoading message="Sign Up Page" />;
+  return <CustomLoading message="User" />;
 }

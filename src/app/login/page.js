@@ -6,9 +6,10 @@ import { useContext, useEffect, useState } from "react";
 
 import { currentUserContext } from "../context/userContext";
 import { useHelper } from "../utils/utils";
-import { Alert, CircularProgress } from "@mui/material";
+import { Alert } from "@mui/material";
 
 import { getCookie } from "cookies-next";
+import CustomLoading from "../components/customloading";
 
 const FORM_OPTIONS = ["userName", "password"];
 
@@ -90,7 +91,7 @@ export default function Login() {
         </div>
       ) : (
         <div className="flex justify-center mt-32">
-          <CircularProgress />
+          <CustomLoading message="User" />
         </div>
       )}
     </>
