@@ -21,6 +21,7 @@ export const MEAL_TYPE_OPTIONS = [
 ];
 
 export const FORM_ARRAY_OPTIONS = ["ingredients", "instructions", "tastes"];
+// add mui components for forms
 
 export default function NewRecipe() {
   const [currentUser, setCurrentUser] = useContext(currentUserContext);
