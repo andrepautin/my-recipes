@@ -6,7 +6,16 @@ import { useContext, useEffect, useState } from "react";
 
 import { currentUserContext } from "../context/userContext";
 import { useHelper } from "../utils/utils";
-import { Alert } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 import { getCookie } from "cookies-next";
 import CustomLoading from "../components/customloading";
@@ -58,37 +67,58 @@ export default function Login() {
         </Alert>
       )}
       {!isLoading ? (
-        <div className="flex flex-col mt-10">
-          <h1 className="my-5 text-center">
-            Please fill out the information below.
-          </h1>
-          <div className="flex justify-center">
-            <form onSubmit={handleSubmit} className="flex flex-col">
+        <Box
+          sx={{ display: "flex", justifyContent: "center" }}
+          component="form"
+          onSubmit={handleSubmit}
+        >
+          <Paper
+            elevation={24}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              bgcolor: "#F4BF64",
+              mt: 5,
+              width: "70%",
+              // breakpoints for mt and width, set max width
+            }}
+          >
+            <Typography sx={{ textAlign: "center" }}>
+              Please enter your credentials in the fields below.
+            </Typography>
+            <FormControl>
               {FORM_OPTIONS.map((option) => (
-                <div key={option} className="mb-5">
-                  <input
-                    placeholder={
-                      option[0].toUpperCase() + option.slice(1).toLowerCase()
-                    }
-                    className="border-2 border-zinc-950"
-                    type={option === "password" ? "password" : "text"}
-                    id={option}
-                    name={option}
-                    value={formData?.[option]}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+                <Grid
+                  key={option}
+                  container
+                  columnSpacing={1}
+                  sx={{ display: "flex", justifyContent: "center", mt: 2 }}
+                >
+                  <Grid>
+                    <TextField
+                      placeholder={
+                        option[0].toUpperCase() + option.slice(1).toLowerCase()
+                      }
+                      type={option === "password" ? "password" : "text"}
+                      id={option}
+                      name={option}
+                      value={formData?.[option]}
+                      onChange={handleChange}
+                      required={true}
+                    />
+                  </Grid>
+                </Grid>
               ))}
-              <button type="submit" className="text-center">
-                Submit
-              </button>
-            </form>
-          </div>
-          <Link href="/signup" className="text-center mt-5">
-            Back to Sign Up
-          </Link>
-        </div>
+              <Button type="submit">Submit</Button>
+              <Button>
+                <Link href="/signup" className="text-center mt-5">
+                  Back to Sign Up
+                </Link>
+              </Button>
+            </FormControl>
+          </Paper>
+        </Box>
       ) : (
         <div className="flex justify-center mt-32">
           <CustomLoading message="User" />
