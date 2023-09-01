@@ -1,10 +1,10 @@
-import { LinearProgress } from "@mui/material";
+import { Box, LinearProgress, Typography } from "@mui/material";
 
 export default function CustomLoading({ message }) {
   return (
-    <div>
-      <h1>Loading {message && message}...</h1>
+    <Box sx={{ my: "auto" }}>
+      <Typography>Loading {message && message}...</Typography>
       <LinearProgress />
-    </div>
+    </Box>
   );
 }

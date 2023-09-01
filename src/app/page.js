@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useContext } from "react";
 import { currentUserContext } from "./context/userContext";
 import { useRouter } from "next/navigation";
-import { Paper, Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 export default function Home() {
   const [currentUser, setCurrentUser] = useContext(currentUserContext);
   const router = useRouter();
@@ -11,7 +11,7 @@ export default function Home() {
     router.push("/dashboard");
   }
   return (
-    <div className="flex justify-center">
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Paper
         elevation={24}
         sx={{
@@ -21,19 +21,24 @@ export default function Home() {
           bgcolor: "#F4BF64",
           mt: 10,
           width: "50%",
-          // set breakpoints and max width/height
+          minWidth: "300px",
+          maxWidth: "500px",
         }}
       >
-        <Typography sx={{ textAlign: "center" }}>
+        <Typography sx={{ textAlign: "center", mt: 2 }}>
           Welcome, please log in or sign up to continue.
         </Typography>
-        <div className="flex justify-center mt-5">
-          <Link href="/login" className="mr-5">
-            Login
-          </Link>
-          <Link href="/signup">Sign Up</Link>
-        </div>
+        <Box sx={{ display: "flex", justifyContent: "center", m: 2 }}>
+          <Button>
+            <Link href="/login" className="mr-5">
+              Login
+            </Link>
+          </Button>
+          <Button>
+            <Link href="/signup">Sign Up</Link>
+          </Button>
+        </Box>
       </Paper>
-    </div>
+    </Box>
   );
 }

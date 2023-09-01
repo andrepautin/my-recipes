@@ -79,12 +79,13 @@ export default function Login() {
               flexDirection: "column",
               justifyContent: "center",
               bgcolor: "#F4BF64",
-              mt: 5,
+              mt: 3,
               width: "70%",
-              // breakpoints for mt and width, set max width
+              minWidth: "300px",
+              maxWidth: "600px",
             }}
           >
-            <Typography sx={{ textAlign: "center" }}>
+            <Typography sx={{ textAlign: "center", mt: 2 }}>
               Please enter your credentials in the fields below.
             </Typography>
             <FormControl>
@@ -110,19 +111,28 @@ export default function Login() {
                   </Grid>
                 </Grid>
               ))}
-              <Button type="submit">Submit</Button>
-              <Button>
-                <Link href="/signup" className="text-center mt-5">
-                  Back to Sign Up
-                </Link>
-              </Button>
             </FormControl>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                mx: "auto",
+                my: 2,
+              }}
+            >
+              <Button type="submit" sx={{ width: "150px" }}>
+                Submit
+              </Button>
+              <Button sx={{ width: "150px" }}>
+                <Link href="/signup">Back to Sign Up</Link>
+              </Button>
+            </Box>
           </Paper>
         </Box>
       ) : (
-        <div className="flex justify-center mt-32">
+        <Box>
           <CustomLoading message="User" />
-        </div>
+        </Box>
       )}
     </>
   );
