@@ -6,8 +6,9 @@ import { useContext, useEffect, useState } from "react";
 
 import { currentUserContext } from "../context/userContext";
 import { useHelper } from "../utils/utils";
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { getCookie } from "cookies-next";
+import CustomLoading from "../components/customloading";
 
 const FORM_OPTIONS = [
   "firstName",
@@ -94,9 +95,9 @@ export default function SignUp() {
           </Link>
         </div>
       ) : (
-        <div className="flex justify-center mt-32">
-          <CircularProgress />
-        </div>
+        <Box>
+          <CustomLoading message="New User" />
+        </Box>
       )}
     </>
   );
