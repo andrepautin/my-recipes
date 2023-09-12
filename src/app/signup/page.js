@@ -6,7 +6,16 @@ import { useContext, useEffect, useState } from "react";
 
 import { currentUserContext } from "../context/userContext";
 import { useHelper } from "../utils/utils";
-import { Box, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  FormControl,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { getCookie } from "cookies-next";
 import CustomLoading from "../components/customloading";
 
@@ -57,43 +66,75 @@ export default function SignUp() {
   return (
     <>
       {!isLoading ? (
-        <div className="flex flex-col mt-10">
-          <h1 className="my-5 text-center">
-            Please fill out the information below.
-          </h1>
-          <div className="flex justify-center">
-            <form onSubmit={handleSubmit} className="flex flex-col">
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+          component="form"
+          onSubmit={handleSubmit}
+        >
+          <Paper
+            elevation={24}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              bgcolor: "#F4BF64",
+              mt: 3,
+              width: "70%",
+              minWidth: "300px",
+              maxWidth: "600px",
+            }}
+          >
+            <Typography sx={{ textAlign: "center", mt: 2 }}>
+              Please fill out the information below.
+            </Typography>
+            <FormControl onSubmit={handleSubmit}>
               {FORM_OPTIONS.map((option) => (
-                <div key={option} className="mb-5">
-                  <input
-                    placeholder={
-                      option[0].toUpperCase() + option.slice(1).toLowerCase()
-                    }
-                    className="border-2 border-zinc-950"
-                    type={
-                      option === "password" || option === "confirmPassword"
-                        ? "password"
-                        : option === "email"
-                        ? "email"
-                        : "text"
-                    }
-                    id={option}
-                    name={option}
-                    value={formData?.[option]}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+                <Grid
+                  key={option}
+                  container
+                  columnSpacing={1}
+                  sx={{ display: "flex", justifyContent: "center", mt: 2 }}
+                >
+                  <Grid>
+                    <TextField
+                      placeholder={
+                        option[0].toUpperCase() + option.slice(1).toLowerCase()
+                      }
+                      type={
+                        option === "password" || option === "confirmPassword"
+                          ? "password"
+                          : "text"
+                      }
+                      id={option}
+                      name={option}
+                      value={formData?.[option]}
+                      onChange={handleChange}
+                      required={true}
+                    />
+                  </Grid>
+                </Grid>
               ))}
-              <button type="submit" className="text-center">
+            </FormControl>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                mx: "auto",
+                my: 2,
+              }}
+            >
+              <Button type="submit" sx={{ width: "150px" }}>
                 Submit
-              </button>
-            </form>
-          </div>
-          <Link href="/login" className="text-center mt-5">
-            Back to Login
-          </Link>
-        </div>
+              </Button>
+              <Button sx={{ width: "150px" }}>
+                <Link href="/login">Back to Login</Link>
+              </Button>
+            </Box>
+          </Paper>
+        </Box>
       ) : (
         <Box>
           <CustomLoading message="New User" />
