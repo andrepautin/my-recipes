@@ -26,7 +26,7 @@ export default function Header() {
     }
   };
   return (
-    <div className="bg-amber-600 text-orange-300 w-full h-16 flex items-center text-2xl">
+    <div className="bg-amber-600 text-orange-300 w-full h-16 flex items-center text-2xl sticky top-0 z-50">
       <Link href={currentUser ? `/dashboard` : "/"} className="ml-3">
         MyRecipes
         <RestaurantIcon />
