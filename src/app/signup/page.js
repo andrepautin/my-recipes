@@ -126,10 +126,26 @@ export default function SignUp() {
                 my: 2,
               }}
             >
-              <Button type="submit" sx={{ width: "150px" }}>
+              <Button
+                sx={{
+                  width: "150px",
+                  "&.MuiButton-root:hover": {
+                    color: "white",
+                    backgroundColor: "transparent",
+                  },
+                }}
+              >
                 Submit
               </Button>
-              <Button sx={{ width: "150px" }}>
+              <Button
+                sx={{
+                  width: "150px",
+                  "&.MuiButton-root:hover": {
+                    color: "white",
+                    backgroundColor: "transparent",
+                  },
+                }}
+              >
                 <Link href="/login">Back to Login</Link>
               </Button>
             </Box>

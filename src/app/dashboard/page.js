@@ -1,7 +1,7 @@
 import axios from "axios";
 import RecipeCardList from "@/app/components/recipecardlist";
 import { cookies } from "next/headers";
-import Link from "next/link";
+import NewRecipeButton from "../components/newrecipebutton";
 
 async function getRecentRecipes() {
   const nextCookies = cookies();
@@ -35,9 +35,7 @@ export default async function Dashboard() {
         <h1 className="text-center">Recently Updated Recipes</h1>
         <RecipeCardList recipes={recentlyUpdated} />
       </div>
-      <div className="text-center mt-5">
-        <Link href="/newrecipe">Add a New Recipe</Link>
-      </div>
+      <NewRecipeButton />
     </div>
   );
 }

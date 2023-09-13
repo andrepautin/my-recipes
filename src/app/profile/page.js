@@ -6,6 +6,15 @@ import { useHelper } from "../utils/utils";
 import axios from "axios";
 import { currentUserContext } from "../context/userContext";
 import { useRouter } from "next/navigation";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Grid,
+  Paper,
+  TextField,
+} from "@mui/material";
 
 const FORM_OPTIONS = ["userName", "firstName", "lastName", "email"];
 
@@ -60,31 +69,85 @@ export default function Profile() {
     }
   };
   return (
-    <div className="flex justify-center">
-      <form onSubmit={handleUpdate} className="flex flex-col">
-        {FORM_OPTIONS.map((option) => (
-          <div key={option} className="mb-5">
-            <label>
-              {option[0].toUpperCase() + option.slice(1).toLowerCase()}
-            </label>
-            <input
-              className="border-2 border-zinc-950"
-              type={option === "email" ? "email" : "text"}
-              id={option}
-              name={option}
-              value={formData?.[option]}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        ))}
-        <button type="submit" className="text-center">
-          Submit
-        </button>
-        <button type="text" className="text-center" onClick={handleDelete}>
-          Delete Account
-        </button>
-      </form>
-    </div>
+    <Box
+      sx={{ display: "flex", justifyContent: "center" }}
+      component="form"
+      onSubmit={handleUpdate}
+    >
+      <Paper
+        elevation={24}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          bgcolor: "#F4BF64",
+          mt: 3,
+          width: "70%",
+          minWidth: "300px",
+          maxWidth: "600px",
+        }}
+      >
+        <FormControl>
+          {FORM_OPTIONS.map((option) => (
+            <Grid key={option} container columnSpacing={1}>
+              <Grid
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  mt: 2,
+                  ml: "auto",
+                  mr: "auto",
+                }}
+              >
+                <FormLabel>
+                  {option[0].toUpperCase() + option.slice(1).toLowerCase()}
+                </FormLabel>
+                <TextField
+                  type={option === "email" ? "email" : "text"}
+                  id={option}
+                  name={option}
+                  value={formData?.[option]}
+                  onChange={handleChange}
+                  required
+                />
+              </Grid>
+            </Grid>
+          ))}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              mx: "auto",
+              my: 2,
+            }}
+          >
+            <Button
+              type="submit"
+              sx={{
+                width: "150px",
+                "&.MuiButton-root:hover": {
+                  color: "white",
+                  backgroundColor: "transparent",
+                },
+              }}
+            >
+              Submit
+            </Button>
+            <Button
+              sx={{
+                width: "150px",
+                "&.MuiButton-root:hover": {
+                  color: "white",
+                  backgroundColor: "transparent",
+                },
+              }}
+              onClick={handleDelete}
+            >
+              Delete Account
+            </Button>
+          </Box>
+        </FormControl>
+      </Paper>
+    </Box>
   );
 }

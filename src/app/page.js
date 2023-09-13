@@ -29,12 +29,24 @@ export default function Home() {
           Welcome, please log in or sign up to continue.
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "center", m: 2 }}>
-          <Button>
-            <Link href="/login" className="mr-5">
-              Login
-            </Link>
+          <Button
+            sx={{
+              "&.MuiButton-root:hover": {
+                color: "white",
+                backgroundColor: "transparent",
+              },
+            }}
+          >
+            <Link href="/login">Login</Link>
           </Button>
-          <Button>
+          <Button
+            sx={{
+              "&.MuiButton-root:hover": {
+                color: "white",
+                backgroundColor: "transparent",
+              },
+            }}
+          >
             <Link href="/signup">Sign Up</Link>
           </Button>
         </Box>
