@@ -11,7 +11,7 @@ import {
 } from "@/app/newrecipe/page";
 import { useRouter } from "next/navigation";
 import { useHelper } from "@/app/utils/utils";
-
+// add mui styles for edit component
 export default function EditRecipe({ params }) {
   const [currentUser, setCurrentUser] = useContext(currentUserContext);
   const [formData, setFormData] = useState({
