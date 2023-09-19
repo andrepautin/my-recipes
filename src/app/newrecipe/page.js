@@ -6,7 +6,6 @@ import { useHelper } from "../utils/utils";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import {
   Box,
   Button,
@@ -111,136 +110,144 @@ export default function NewRecipe() {
     }
   };
   return (
-    <Box
-      sx={{ display: "flex", justifyContent: "center" }}
-      component="form"
-      onSubmit={handleSubmit}
-    >
-      <Paper
-        elevation={24}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          bgcolor: "#F4BF64",
-          mt: 3,
-          width: "70%",
-          minWidth: "300px",
-          maxWidth: "600px",
-        }}
-      >
-        <FormControl onSubmit={handleSubmit}>
-          {FORM_SINGLE_OPTIONS.map((option) => (
-            <Grid
-              key={option}
-              container
-              columnSpacing={1}
-              sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                mt: 2,
-                ml: 2,
-              }}
-            >
-              <Grid>
-                <FormLabel>
-                  {option[0].toUpperCase() + option.slice(1).toLowerCase()}
-                </FormLabel>
-                <Box>
-                  {option === "name" ? (
-                    <TextField
-                      name={option}
-                      type="text"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                    />
-                  ) : (
-                    <Select
-                      name={option === "type" ? "type" : "mealType"}
-                      onChange={handleChange}
-                      required
-                      value={
-                        option === "type" ? formData.type : formData.mealType
-                      }
-                      sx={{ minWidth: "194px" }}
-                    >
-                      {option === "type"
-                        ? TYPE_OPTIONS.map((t) => (
-                            <MenuItem key={t} value={t}>
-                              {t}
-                            </MenuItem>
-                          ))
-                        : MEAL_TYPE_OPTIONS.map((mt) => (
-                            <MenuItem key={mt} value={mt}>
-                              {mt}
-                            </MenuItem>
-                          ))}
-                    </Select>
-                  )}
-                </Box>
-              </Grid>
-            </Grid>
-          ))}
-          {FORM_ARRAY_OPTIONS.map((option) => (
-            <Grid
-              key={option}
-              container
-              columnSpacing={1}
-              sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                mt: 2,
-                ml: 2,
-              }}
-            >
-              <Grid>
-                <FormLabel>
-                  {option[0].toUpperCase() + option.slice(1).toLowerCase()}
-                </FormLabel>
-                <Box>
-                  {formData[option].map((ing, index) => (
-                    <Box key={index}>
-                      <TextField
-                        name={option}
-                        type="text"
-                        value={formData[option][index]}
-                        onChange={(e) => handleOptionChange(e, index)}
-                        required
-                      />
-                      {formData[option].length > 1 && (
-                        <Button
+    <>
+      {loading ? (
+        <CustomLoading message="New Recipe" />
+      ) : (
+        <Box
+          sx={{ display: "flex", justifyContent: "center" }}
+          component="form"
+          onSubmit={handleSubmit}
+        >
+          <Paper
+            elevation={24}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              bgcolor: "#F4BF64",
+              mt: 3,
+              width: "70%",
+              minWidth: "300px",
+              maxWidth: "600px",
+            }}
+          >
+            <FormControl onSubmit={handleSubmit}>
+              {FORM_SINGLE_OPTIONS.map((option) => (
+                <Grid
+                  key={option}
+                  container
+                  columnSpacing={1}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    mt: 2,
+                    ml: 2,
+                  }}
+                >
+                  <Grid>
+                    <FormLabel>
+                      {option[0].toUpperCase() + option.slice(1).toLowerCase()}
+                    </FormLabel>
+                    <Box>
+                      {option === "name" ? (
+                        <TextField
                           name={option}
-                          onClick={(e) => handleRemoveItem(e, index)}
-                        >
-                          Remove
-                        </Button>
+                          type="text"
+                          value={formData.name}
+                          onChange={handleChange}
+                          required
+                        />
+                      ) : (
+                        <FormControl>
+                          <Select
+                            name={option === "type" ? "type" : "mealType"}
+                            onChange={handleChange}
+                            required
+                            value={
+                              option === "type"
+                                ? formData.type
+                                : formData.mealType
+                            }
+                            sx={{ minWidth: "194px" }}
+                          >
+                            {option === "type"
+                              ? TYPE_OPTIONS.map((t) => (
+                                  <MenuItem key={t} value={t}>
+                                    {t}
+                                  </MenuItem>
+                                ))
+                              : MEAL_TYPE_OPTIONS.map((mt) => (
+                                  <MenuItem key={mt} value={mt}>
+                                    {mt}
+                                  </MenuItem>
+                                ))}
+                          </Select>
+                        </FormControl>
                       )}
                     </Box>
-                  ))}
-                  <Box>
-                    <Button
-                      name={option}
-                      type="button"
-                      onClick={handleOptionAdd}
-                    >
-                      Add{" "}
+                  </Grid>
+                </Grid>
+              ))}
+              {FORM_ARRAY_OPTIONS.map((option) => (
+                <Grid
+                  key={option}
+                  container
+                  columnSpacing={1}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    mt: 2,
+                    ml: 2,
+                  }}
+                >
+                  <Grid>
+                    <FormLabel>
                       {option[0].toUpperCase() + option.slice(1).toLowerCase()}
-                    </Button>
-                  </Box>
-                </Box>
-              </Grid>
-            </Grid>
-          ))}
-          {loading ? (
-            <CustomLoading message="New Recipe" />
-          ) : (
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Button type="submit">Add Recipe</Button>
-            </Box>
-          )}
-        </FormControl>
-      </Paper>
-    </Box>
+                    </FormLabel>
+                    <Box>
+                      {formData[option].map((ing, index) => (
+                        <Box key={index}>
+                          <TextField
+                            name={option}
+                            type="text"
+                            value={formData[option][index]}
+                            onChange={(e) => handleOptionChange(e, index)}
+                            required
+                          />
+                          {formData[option].length > 1 && (
+                            <Button
+                              name={option}
+                              onClick={(e) => handleRemoveItem(e, index)}
+                            >
+                              Remove
+                            </Button>
+                          )}
+                        </Box>
+                      ))}
+                      <Box>
+                        <Button
+                          name={option}
+                          type="button"
+                          onClick={handleOptionAdd}
+                        >
+                          Add{" "}
+                          {option[0].toUpperCase() +
+                            option.slice(1).toLowerCase()}
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Grid>
+                </Grid>
+              ))}
+
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Button type="submit">Add Recipe</Button>
+              </Box>
+            </FormControl>
+          </Paper>
+        </Box>
+      )}
+    </>
   );
 }

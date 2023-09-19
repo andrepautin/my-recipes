@@ -2,11 +2,16 @@ import axios from "axios";
 import RecipeCardList from "@/app/components/recipecardlist";
 import { cookies } from "next/headers";
 import NewRecipeButton from "../components/newrecipebutton";
+import { redirect } from "next/navigation";
 
 async function getRecentRecipes() {
   const nextCookies = cookies();
-  const currentUser = JSON.parse(nextCookies.get("currentUser").value);
-  const token = nextCookies.get("token").value;
+  let currentUser;
+  let token;
+  if (nextCookies.get("currentUser") && nextCookies.get("token")) {
+    currentUser = JSON.parse(nextCookies.get("currentUser").value);
+    token = nextCookies.get("token").value;
+  }
   const headers = { authorization: "Bearer " + token };
 
   try {
@@ -25,6 +30,10 @@ async function getRecentRecipes() {
 
 export default async function Dashboard() {
   const { recentlyCreated, recentlyUpdated, error } = await getRecentRecipes();
+  if (error) {
+    console.log("ERROR--->", error);
+    redirect("/");
+  }
   return (
     <div>
       <div>

@@ -11,6 +11,18 @@ import {
 } from "@/app/newrecipe/page";
 import { useRouter } from "next/navigation";
 import { useHelper } from "@/app/utils/utils";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Grid,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+} from "@mui/material";
+import CustomLoading from "@/app/components/customloading";
 // add mui styles for edit component
 export default function EditRecipe({ params }) {
   const [currentUser, setCurrentUser] = useContext(currentUserContext);
@@ -115,84 +127,143 @@ export default function EditRecipe({ params }) {
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
-      {FORM_SINGLE_OPTIONS.map((option) => (
-        <div key={option}>
-          <label>
-            {option[0].toUpperCase() + option.slice(1).toLowerCase()}
-          </label>
-          {option === "name" ? (
-            <input
-              className="border-2 border-zinc-950"
-              name={option}
-              type="text"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          ) : (
-            <select
-              className="border-2 border-zinc-950"
-              name={option === "type" ? "type" : "mealType"}
-              onChange={handleChange}
-              required
-            >
-              {option === "type"
-                ? TYPE_OPTIONS.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
-                  ))
-                : MEAL_TYPE_OPTIONS.map((mt) => (
-                    <option key={mt} value={mt}>
-                      {mt}
-                    </option>
-                  ))}
-            </select>
-          )}
-        </div>
-      ))}
-      {FORM_ARRAY_OPTIONS.map((option) => (
-        <div key={option}>
-          <label>
-            {option[0].toUpperCase() + option.slice(1).toLowerCase()}
-          </label>
-          <div>
-            {formData[option].map((ing, index) => (
-              <div key={index}>
-                <input
-                  className="border-2 border-zinc-950"
-                  name={option}
-                  type="text"
-                  value={formData[option][index]}
-                  onChange={(e) => handleOptionChange(e, index)}
-                  required
-                />
-                {formData[option].length > 1 && (
-                  <button
-                    name={option}
-                    onClick={(e) => handleRemoveItem(e, index)}
-                  >
-                    Remove
-                  </button>
-                )}
-              </div>
-            ))}
-            <div>
-              <button name={option} type="button" onClick={handleOptionAdd}>
-                Add {option[0].toUpperCase() + option.slice(1).toLowerCase()}
-              </button>
-            </div>
-          </div>
-        </div>
-      ))}
+    <>
       {loading ? (
-        <h1>Updating Recipe...</h1>
+        <CustomLoading message="Updated Recipe" />
       ) : (
-        <div>
-          <button type="submit">Update Recipe</button>
-        </div>
+        <Box
+          sx={{ display: "flex", justifyContent: "center" }}
+          component="form"
+          onSubmit={handleSubmit}
+        >
+          <Paper
+            elevation={24}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              bgcolor: "#F4BF64",
+              mt: 3,
+              width: "70%",
+              minWidth: "300px",
+              maxWidth: "600px",
+            }}
+          >
+            <FormControl onSubmit={handleSubmit}>
+              {FORM_SINGLE_OPTIONS.map((option) => (
+                <Grid
+                  key={option}
+                  container
+                  columnSpacing={1}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    mt: 2,
+                    ml: 2,
+                  }}
+                >
+                  <Grid>
+                    <FormLabel>
+                      {option[0].toUpperCase() + option.slice(1).toLowerCase()}
+                    </FormLabel>
+                    <Box>
+                      {option === "name" ? (
+                        <TextField
+                          name={option}
+                          type="text"
+                          value={formData.name}
+                          onChange={handleChange}
+                          required
+                        />
+                      ) : (
+                        <FormControl>
+                          <Select
+                            name={option === "type" ? "type" : "mealType"}
+                            onChange={handleChange}
+                            required
+                            value={
+                              option === "type"
+                                ? formData.type
+                                : formData.mealType
+                            }
+                            sx={{ minWidth: "194px" }}
+                          >
+                            {option === "type"
+                              ? TYPE_OPTIONS.map((t) => (
+                                  <MenuItem key={t} value={t}>
+                                    {t}
+                                  </MenuItem>
+                                ))
+                              : MEAL_TYPE_OPTIONS.map((mt) => (
+                                  <MenuItem key={mt} value={mt}>
+                                    {mt}
+                                  </MenuItem>
+                                ))}
+                          </Select>
+                        </FormControl>
+                      )}
+                    </Box>
+                  </Grid>
+                </Grid>
+              ))}
+              {FORM_ARRAY_OPTIONS.map((option) => (
+                <Grid
+                  key={option}
+                  container
+                  columnSpacing={1}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    mt: 2,
+                    ml: 2,
+                  }}
+                >
+                  <Grid>
+                    <FormLabel>
+                      {option[0].toUpperCase() + option.slice(1).toLowerCase()}
+                    </FormLabel>
+                    <Box>
+                      {formData[option].map((ing, index) => (
+                        <Box key={index}>
+                          <TextField
+                            name={option}
+                            type="text"
+                            value={formData[option][index]}
+                            onChange={(e) => handleOptionChange(e, index)}
+                            required
+                          />
+                          {formData[option].length > 1 && (
+                            <Button
+                              name={option}
+                              onClick={(e) => handleRemoveItem(e, index)}
+                            >
+                              Remove
+                            </Button>
+                          )}
+                        </Box>
+                      ))}
+                      <Box>
+                        <Button
+                          name={option}
+                          type="button"
+                          onClick={handleOptionAdd}
+                        >
+                          Add{" "}
+                          {option[0].toUpperCase() +
+                            option.slice(1).toLowerCase()}
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Grid>
+                </Grid>
+              ))}
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Button type="submit">Update Recipe</Button>
+              </Box>
+            </FormControl>
+          </Paper>
+        </Box>
       )}
-    </form>
+    </>
   );
 }

@@ -11,6 +11,7 @@ import {
   Button,
   CircularProgress,
   FormControl,
+  FormLabel,
   Grid,
   Paper,
   TextField,
@@ -99,21 +100,27 @@ export default function SignUp() {
                   sx={{ display: "flex", justifyContent: "center", mt: 2 }}
                 >
                   <Grid>
-                    <TextField
-                      placeholder={
-                        option[0].toUpperCase() + option.slice(1).toLowerCase()
-                      }
-                      type={
-                        option === "password" || option === "confirmPassword"
-                          ? "password"
-                          : "text"
-                      }
-                      id={option}
-                      name={option}
-                      value={formData?.[option]}
-                      onChange={handleChange}
-                      required={true}
-                    />
+                    <FormLabel>
+                      {option[0].toUpperCase() + option.slice(1).toLowerCase()}
+                    </FormLabel>
+                    <Box>
+                      <TextField
+                        placeholder={
+                          option[0].toUpperCase() +
+                          option.slice(1).toLowerCase()
+                        }
+                        type={
+                          option === "password" || option === "confirmPassword"
+                            ? "password"
+                            : "text"
+                        }
+                        id={option}
+                        name={option}
+                        value={formData?.[option]}
+                        onChange={handleChange}
+                        required={true}
+                      />
+                    </Box>
                   </Grid>
                 </Grid>
               ))}
