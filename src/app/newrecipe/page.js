@@ -26,8 +26,9 @@ export const TYPE_OPTIONS = ["food", "drink"];
 export const MEAL_TYPE_OPTIONS = [
   "breakfast",
   "lunch",
-  "dinner",
   "snack",
+  "dinner",
+  "dessert",
   "any",
 ];
 

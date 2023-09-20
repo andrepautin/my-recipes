@@ -3,6 +3,7 @@ import RecipeCardList from "@/app/components/recipecardlist";
 import { cookies } from "next/headers";
 import NewRecipeButton from "../components/newrecipebutton";
 import { redirect } from "next/navigation";
+import { Box, Paper, Typography } from "@mui/material";
 
 async function getRecentRecipes() {
   const nextCookies = cookies();
@@ -35,16 +36,36 @@ export default async function Dashboard() {
     redirect("/");
   }
   return (
-    <div>
-      <div>
-        <h1 className="text-center">Recently Created Recipes</h1>
-        <RecipeCardList recipes={recentlyCreated} />
-      </div>
-      <div>
-        <h1 className="text-center">Recently Updated Recipes</h1>
-        <RecipeCardList recipes={recentlyUpdated} />
-      </div>
-      <NewRecipeButton />
-    </div>
+    <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
+      <Paper
+        elevation={24}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          bgcolor: "#F4BF64",
+          mt: 3,
+          // width: "70%",
+          minWidth: "300px",
+          maxWidth: "600px",
+        }}
+      >
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="h5" sx={{ textAlign: "center", mb: 2, mt: 2 }}>
+            Recently Created Recipes
+          </Typography>
+          <RecipeCardList recipes={recentlyCreated} />
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="h5" sx={{ textAlign: "center", mb: 2 }}>
+            Recently Updated Recipes
+          </Typography>
+          <RecipeCardList recipes={recentlyUpdated} />
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <NewRecipeButton />
+        </Box>
+      </Paper>
+    </Box>
   );
 }
