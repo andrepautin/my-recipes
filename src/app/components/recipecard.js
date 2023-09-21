@@ -12,7 +12,7 @@ export default function RecipeCard({ recipe }) {
           width: 120,
           m: 1,
           // bgcolor: "#E9D0AA",
-          // add hover opacity
+          // add hover opacity/transparency
           ":hover": { backgroundColor: "#9E691A" },
           backgroundImage: `url('${recipeImages.any}')`,
           backgroundSize: "cover",
