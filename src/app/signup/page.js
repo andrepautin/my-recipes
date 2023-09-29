@@ -91,7 +91,7 @@ export default function SignUp() {
             <Typography sx={{ textAlign: "center", mt: 2 }}>
               Please fill out the information below.
             </Typography>
-            <FormControl onSubmit={handleSubmit}>
+            <FormControl>
               {FORM_OPTIONS.map((option) => (
                 <Grid
                   key={option}
@@ -141,6 +141,7 @@ export default function SignUp() {
                     backgroundColor: "transparent",
                   },
                 }}
+                type="submit"
               >
                 Submit
               </Button>
