@@ -15,6 +15,7 @@ import {
   Paper,
   TextField,
 } from "@mui/material";
+import CustomLoading from "../components/customloading";
 
 const FORM_OPTIONS = ["userName", "firstName", "lastName", "email"];
 
@@ -26,6 +27,7 @@ export default function Profile() {
     firstName: currentUser?.firstName,
     lastName: currentUser?.lastName,
   });
+  const [loading, setLoading] = useState(false);
 
   const { handleFormChange, handleLogout } = useHelper();
   const router = useRouter();
@@ -34,6 +36,7 @@ export default function Profile() {
     evt.preventDefault();
     const token = getCookie("token");
     const headers = { authorization: "Bearer " + token };
+    setLoading(true);
     const response = await axios.put(
       "/api/users",
       {
@@ -42,6 +45,7 @@ export default function Profile() {
       },
       { headers }
     );
+    setLoading(false);
     // handle error here
     // const {user, error} = response.data
     setCurrentUser(response.data.user);
@@ -69,85 +73,91 @@ export default function Profile() {
     }
   };
   return (
-    <Box
-      sx={{ display: "flex", justifyContent: "center" }}
-      component="form"
-      onSubmit={handleUpdate}
-    >
-      <Paper
-        elevation={24}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          bgcolor: "#F4BF64",
-          mt: 3,
-          width: "70%",
-          minWidth: "300px",
-          maxWidth: "600px",
-        }}
-      >
-        <FormControl>
-          {FORM_OPTIONS.map((option) => (
-            <Grid key={option} container columnSpacing={1}>
-              <Grid
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  mt: 2,
-                  ml: "auto",
-                  mr: "auto",
-                }}
-              >
-                <FormLabel>
-                  {option[0].toUpperCase() + option.slice(1).toLowerCase()}
-                </FormLabel>
-                <TextField
-                  type={option === "email" ? "email" : "text"}
-                  id={option}
-                  name={option}
-                  value={formData?.[option]}
-                  onChange={handleChange}
-                  required
-                />
-              </Grid>
-            </Grid>
-          ))}
-          <Box
+    <>
+      {loading ? (
+        <CustomLoading message="Profile" />
+      ) : (
+        <Box
+          sx={{ display: "flex", justifyContent: "center" }}
+          component="form"
+          onSubmit={handleUpdate}
+        >
+          <Paper
+            elevation={24}
             sx={{
               display: "flex",
               flexDirection: "column",
-              mx: "auto",
-              my: 2,
+              justifyContent: "center",
+              bgcolor: "#F4BF64",
+              mt: 3,
+              width: "70%",
+              minWidth: "300px",
+              maxWidth: "600px",
             }}
           >
-            <Button
-              type="submit"
-              sx={{
-                width: "150px",
-                "&.MuiButton-root:hover": {
-                  color: "white",
-                  backgroundColor: "transparent",
-                },
-              }}
-            >
-              Submit
-            </Button>
-            <Button
-              sx={{
-                width: "150px",
-                "&.MuiButton-root:hover": {
-                  color: "white",
-                  backgroundColor: "transparent",
-                },
-              }}
-              onClick={handleDelete}
-            >
-              Delete Account
-            </Button>
-          </Box>
-        </FormControl>
-      </Paper>
-    </Box>
+            <FormControl>
+              {FORM_OPTIONS.map((option) => (
+                <Grid key={option} container columnSpacing={1}>
+                  <Grid
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      mt: 2,
+                      ml: "auto",
+                      mr: "auto",
+                    }}
+                  >
+                    <FormLabel>
+                      {option[0].toUpperCase() + option.slice(1).toLowerCase()}
+                    </FormLabel>
+                    <TextField
+                      type={option === "email" ? "email" : "text"}
+                      id={option}
+                      name={option}
+                      value={formData?.[option]}
+                      onChange={handleChange}
+                      required
+                    />
+                  </Grid>
+                </Grid>
+              ))}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  mx: "auto",
+                  my: 2,
+                }}
+              >
+                <Button
+                  type="submit"
+                  sx={{
+                    width: "150px",
+                    "&.MuiButton-root:hover": {
+                      color: "white",
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                >
+                  Submit
+                </Button>
+                <Button
+                  sx={{
+                    width: "150px",
+                    "&.MuiButton-root:hover": {
+                      color: "white",
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                  onClick={handleDelete}
+                >
+                  Delete Account
+                </Button>
+              </Box>
+            </FormControl>
+          </Paper>
+        </Box>
+      )}
+    </>
   );
 }
