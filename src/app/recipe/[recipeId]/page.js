@@ -39,7 +39,11 @@ export default async function RecipeDetail({ params }) {
       <TastesList tastes={recipe?.tastes} />
       <IngredientsList ingredients={recipe?.ingredients} />
       <InstructionsList instructions={recipe?.instructions} />
-      <DeleteRecipe userId={currentUser?.id} recipeId={recipe?.id} />
+      <DeleteRecipe
+        userId={currentUser?.id}
+        recipeId={recipe?.id}
+        currentUser={currentUser}
+      />
     </div>
   );
 }

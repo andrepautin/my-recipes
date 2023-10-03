@@ -7,6 +7,7 @@ import NavMenu from "./navmenu";
 import { useHelper } from "../utils/utils";
 import { useRouter } from "next/navigation";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
+import { Typography } from "@mui/material";
 
 const MENU_OPTIONS = ["Recipes", "Profile", "Logout"];
 export default function Header() {
@@ -28,8 +29,12 @@ export default function Header() {
   return (
     <div className="bg-amber-600 text-orange-300 w-full h-16 flex items-center text-2xl sticky top-0 z-50">
       <Link href={currentUser ? `/dashboard` : "/"} className="ml-3">
-        MyRecipes
-        <RestaurantIcon />
+        <Typography>
+          MyRecipes
+          <RestaurantIcon />{" "}
+          {currentUser?.userName === "demouser1" &&
+            "You are in demo mode - some features are unavailable."}
+        </Typography>
       </Link>
       {currentUser && (
         <NavMenu

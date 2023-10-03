@@ -16,6 +16,7 @@ import {
   Paper,
   Select,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import CustomLoading from "../components/customloading";
 
@@ -241,10 +242,24 @@ export default function NewRecipe() {
                   </Grid>
                 </Grid>
               ))}
-
-              <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <Button type="submit">Add Recipe</Button>
-              </Box>
+              <Tooltip
+                title={
+                  currentUser?.userName === "demouser1"
+                    ? "This feature is disabled in demo mode."
+                    : "Add your new recipe!"
+                }
+              >
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                  <Button
+                    type="submit"
+                    disabled={
+                      currentUser?.userName === "demouser1" ? true : false
+                    }
+                  >
+                    Add Recipe
+                  </Button>
+                </Box>
+              </Tooltip>
             </FormControl>
           </Paper>
         </Box>

@@ -35,6 +35,7 @@ export default async function Dashboard() {
     console.log("ERROR--->", error);
     redirect("/");
   }
+
   return (
     <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
       <Paper

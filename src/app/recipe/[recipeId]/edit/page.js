@@ -21,6 +21,7 @@ import {
   Paper,
   Select,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import CustomLoading from "@/app/components/customloading";
 // add mui styles for edit component
@@ -257,9 +258,24 @@ export default function EditRecipe({ params }) {
                   </Grid>
                 </Grid>
               ))}
-              <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <Button type="submit">Update Recipe</Button>
-              </Box>
+              <Tooltip
+                title={
+                  currentUser?.userName === "demouser1"
+                    ? "This feature is unavailable in demo mode."
+                    : "Update your recipe"
+                }
+              >
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                  <Button
+                    type="submit"
+                    disabled={
+                      currentUser?.userName === "demouser1" ? true : false
+                    }
+                  >
+                    Update Recipe
+                  </Button>
+                </Box>
+              </Tooltip>
             </FormControl>
           </Paper>
         </Box>

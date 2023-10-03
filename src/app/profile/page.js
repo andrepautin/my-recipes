@@ -14,6 +14,7 @@ import {
   Grid,
   Paper,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import CustomLoading from "../components/customloading";
 
@@ -121,39 +122,52 @@ export default function Profile() {
                   </Grid>
                 </Grid>
               ))}
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  mx: "auto",
-                  my: 2,
-                }}
+              <Tooltip
+                title={
+                  currentUser?.userName === "demouser1" &&
+                  "These features are disabled in demo mode."
+                }
               >
-                <Button
-                  type="submit"
+                <Box
                   sx={{
-                    width: "150px",
-                    "&.MuiButton-root:hover": {
-                      color: "white",
-                      backgroundColor: "transparent",
-                    },
+                    display: "flex",
+                    flexDirection: "column",
+                    mx: "auto",
+                    my: 2,
                   }}
                 >
-                  Submit
-                </Button>
-                <Button
-                  sx={{
-                    width: "150px",
-                    "&.MuiButton-root:hover": {
-                      color: "white",
-                      backgroundColor: "transparent",
-                    },
-                  }}
-                  onClick={handleDelete}
-                >
-                  Delete Account
-                </Button>
-              </Box>
+                  <Button
+                    type="submit"
+                    sx={{
+                      width: "150px",
+                      "&.MuiButton-root:hover": {
+                        color: "white",
+                        backgroundColor: "transparent",
+                      },
+                    }}
+                    disabled={
+                      currentUser?.userName === "demouser1" ? true : false
+                    }
+                  >
+                    Update Account
+                  </Button>
+                  <Button
+                    sx={{
+                      width: "150px",
+                      "&.MuiButton-root:hover": {
+                        color: "white",
+                        backgroundColor: "transparent",
+                      },
+                    }}
+                    onClick={handleDelete}
+                    disabled={
+                      currentUser?.userName === "demouser1" ? true : false
+                    }
+                  >
+                    Delete Account
+                  </Button>
+                </Box>
+              </Tooltip>
             </FormControl>
           </Paper>
         </Box>

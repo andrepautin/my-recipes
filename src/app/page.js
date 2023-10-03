@@ -37,7 +37,7 @@ export default function Home() {
               },
             }}
           >
-            <Link href="/login">Login</Link>
+            <Link href={{ pathname: "/login" }}>Login</Link>
           </Button>
           <Button
             sx={{
@@ -47,9 +47,26 @@ export default function Home() {
               },
             }}
           >
-            <Link href="/signup">Sign Up</Link>
+            <Link href={{ pathname: "/signup" }}>Sign Up</Link>
           </Button>
         </Box>
+        <Button
+          sx={{
+            "&.MuiButton-root:hover": {
+              color: "white",
+              backgroundColor: "transparent",
+            },
+          }}
+        >
+          <Link
+            href={{
+              pathname: "/login",
+              query: { name: "demo" },
+            }}
+          >
+            Demo
+          </Link>
+        </Button>
       </Paper>
     </Box>
   );

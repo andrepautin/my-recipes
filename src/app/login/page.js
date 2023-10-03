@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 import { currentUserContext } from "../context/userContext";
@@ -31,11 +31,16 @@ export default function Login() {
   const [error, setError] = useState(false);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { handleFormChange } = useHelper();
 
   useEffect(() => {
     setHasMounted(true);
-  }, []);
+    if (searchParams.get("name") === "demo") {
+      setFormData({ userName: "demouser1", password: "d3m0only!" });
+    }
+  }, [searchParams]);
+
   if (!hasMounted) return null;
   if (hasMounted && currentUser) {
     router.push("/dashboard");
@@ -49,6 +54,23 @@ export default function Login() {
     evt.preventDefault();
     setIsLoading(true);
     const response = await axios.post(`/api/users`, formData);
+    const { user, error } = response.data;
+    if (error) {
+      setIsLoading(false);
+      setError(error);
+    } else {
+      const currentUser = JSON.parse(getCookie("currentUser"));
+      setCurrentUser(currentUser);
+      router.push("/dashboard");
+    }
+  };
+
+  const handleDemo = async () => {
+    setIsLoading(true);
+    const response = await axios.post(`/api/users`, {
+      userName: "demouser1",
+      password: "d3m0only!",
+    });
     const { user, error } = response.data;
     if (error) {
       setIsLoading(false);
