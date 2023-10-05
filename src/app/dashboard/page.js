@@ -3,7 +3,7 @@ import RecipeCardList from "@/app/components/recipecardlist";
 import { cookies } from "next/headers";
 import NewRecipeButton from "../components/newrecipebutton";
 import { redirect } from "next/navigation";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, Tooltip, Typography } from "@mui/material";
 
 async function getRecentRecipes() {
   const nextCookies = cookies();
@@ -63,9 +63,11 @@ export default async function Dashboard() {
           </Typography>
           <RecipeCardList recipes={recentlyUpdated} />
         </Box>
-        <Box sx={{ mb: 2 }}>
-          <NewRecipeButton />
-        </Box>
+        <Tooltip title="Go to the new recipe form">
+          <Box sx={{ mb: 2 }}>
+            <NewRecipeButton />
+          </Box>
+        </Tooltip>
       </Paper>
     </Box>
   );

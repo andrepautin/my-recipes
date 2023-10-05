@@ -136,36 +136,47 @@ export default function Profile() {
                     my: 2,
                   }}
                 >
-                  <Button
-                    type="submit"
-                    sx={{
-                      width: "150px",
-                      "&.MuiButton-root:hover": {
-                        color: "white",
-                        backgroundColor: "transparent",
-                      },
-                    }}
-                    disabled={
-                      currentUser?.userName === "demouser1" ? true : false
-                    }
-                  >
-                    Update Account
-                  </Button>
-                  <Button
-                    sx={{
-                      width: "150px",
-                      "&.MuiButton-root:hover": {
-                        color: "white",
-                        backgroundColor: "transparent",
-                      },
-                    }}
-                    onClick={handleDelete}
-                    disabled={
-                      currentUser?.userName === "demouser1" ? true : false
-                    }
-                  >
-                    Delete Account
-                  </Button>
+                  <Tooltip title="Update account">
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      sx={{
+                        width: "200px",
+                        "&.MuiButtonBase-root": {
+                          bgcolor: "#6A9B6B",
+                        },
+                        "&.MuiButtonBase-root:hover": {
+                          bgcolor: "green",
+                        },
+                        mb: 1,
+                      }}
+                      disabled={
+                        currentUser?.userName === "demouser1" ? true : false
+                      }
+                    >
+                      Update Account
+                    </Button>
+                  </Tooltip>
+                  <Tooltip title="Delete account">
+                    <Button
+                      variant="contained"
+                      sx={{
+                        width: "200px",
+                        "&.MuiButtonBase-root": {
+                          bgcolor: "#CD5D4C",
+                        },
+                        "&.MuiButtonBase-root:hover": {
+                          bgcolor: "red",
+                        },
+                      }}
+                      onClick={handleDelete}
+                      disabled={
+                        currentUser?.userName === "demouser1" ? true : false
+                      }
+                    >
+                      Delete Account
+                    </Button>
+                  </Tooltip>
                 </Box>
               </Tooltip>
             </FormControl>

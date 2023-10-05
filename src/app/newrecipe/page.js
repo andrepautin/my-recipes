@@ -16,6 +16,7 @@ import {
   Paper,
   Select,
   TextField,
+  TextareaAutosize,
   Tooltip,
 } from "@mui/material";
 import CustomLoading from "../components/customloading";
@@ -33,7 +34,7 @@ export const MEAL_TYPE_OPTIONS = [
   "any",
 ];
 
-export const FORM_ARRAY_OPTIONS = ["ingredients", "instructions", "tastes"];
+export const FORM_ARRAY_OPTIONS = ["tastes", "ingredients", "instructions"];
 
 export default function NewRecipe() {
   const [currentUser, setCurrentUser] = useContext(currentUserContext);
@@ -153,7 +154,7 @@ export default function NewRecipe() {
                     </FormLabel>
                     <Box>
                       {option === "name" ? (
-                        <TextField
+                        <TextareaAutosize
                           name={option}
                           type="text"
                           value={formData.name}
@@ -171,7 +172,7 @@ export default function NewRecipe() {
                                 ? formData.type
                                 : formData.mealType
                             }
-                            sx={{ minWidth: "194px" }}
+                            sx={{ minWidth: "194px", bgcolor: "white" }}
                           >
                             {option === "type"
                               ? TYPE_OPTIONS.map((t) => (
@@ -210,7 +211,7 @@ export default function NewRecipe() {
                     <Box>
                       {formData[option].map((ing, index) => (
                         <Box key={index}>
-                          <TextField
+                          <TextareaAutosize
                             name={option}
                             type="text"
                             value={formData[option][index]}
@@ -227,17 +228,28 @@ export default function NewRecipe() {
                           )}
                         </Box>
                       ))}
-                      <Box>
-                        <Button
-                          name={option}
-                          type="button"
-                          onClick={handleOptionAdd}
-                        >
-                          Add{" "}
-                          {option[0].toUpperCase() +
-                            option.slice(1).toLowerCase()}
-                        </Button>
-                      </Box>
+                      <Tooltip title={`Add more ${option}`}>
+                        <Box>
+                          <Button
+                            variant="contained"
+                            name={option}
+                            type="button"
+                            onClick={handleOptionAdd}
+                            sx={{
+                              "&.MuiButtonBase-root": {
+                                bgcolor: "#2C87B5",
+                              },
+                              "&.MuiButtonBase-root:hover": {
+                                bgcolor: "#0C6D9E",
+                              },
+                            }}
+                          >
+                            Add{" "}
+                            {option[0].toUpperCase() +
+                              option.slice(1).toLowerCase()}
+                          </Button>
+                        </Box>
+                      </Tooltip>
                     </Box>
                   </Grid>
                 </Grid>
@@ -251,10 +263,19 @@ export default function NewRecipe() {
               >
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <Button
+                    variant="contained"
                     type="submit"
                     disabled={
                       currentUser?.userName === "demouser1" ? true : false
                     }
+                    sx={{
+                      "&.MuiButtonBase-root": {
+                        bgcolor: "#6A9B6B",
+                      },
+                      "&.MuiButtonBase-root:hover": {
+                        bgcolor: "green",
+                      },
+                    }}
                   >
                     Add Recipe
                   </Button>
