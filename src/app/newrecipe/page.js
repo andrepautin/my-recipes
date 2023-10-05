@@ -130,6 +130,7 @@ export default function NewRecipe() {
               justifyContent: "center",
               bgcolor: "#F4BF64",
               mt: 3,
+              mb: 3,
               width: "70%",
               minWidth: "300px",
               maxWidth: "600px",
@@ -152,14 +153,15 @@ export default function NewRecipe() {
                     <FormLabel>
                       {option[0].toUpperCase() + option.slice(1).toLowerCase()}
                     </FormLabel>
-                    <Box>
+                    <Box sx={{ mt: 1 }}>
                       {option === "name" ? (
-                        <TextareaAutosize
+                        <TextField
                           name={option}
                           type="text"
                           value={formData.name}
                           onChange={handleChange}
                           required
+                          sx={{ bgcolor: "white" }}
                         />
                       ) : (
                         <FormControl>
@@ -172,7 +174,7 @@ export default function NewRecipe() {
                                 ? formData.type
                                 : formData.mealType
                             }
-                            sx={{ minWidth: "194px", bgcolor: "white" }}
+                            sx={{ minWidth: "194px", bgcolor: "white", mt: 1 }}
                           >
                             {option === "type"
                               ? TYPE_OPTIONS.map((t) => (
@@ -210,7 +212,7 @@ export default function NewRecipe() {
                     </FormLabel>
                     <Box>
                       {formData[option].map((ing, index) => (
-                        <Box key={index}>
+                        <Box key={index} sx={{ display: "flex", mt: 1 }}>
                           <TextareaAutosize
                             name={option}
                             type="text"
@@ -222,6 +224,18 @@ export default function NewRecipe() {
                             <Button
                               name={option}
                               onClick={(e) => handleRemoveItem(e, index)}
+                              variant="contained"
+                              sx={{
+                                width: "75px",
+                                maxHeight: "20px",
+                                ml: 1,
+                                "&.MuiButtonBase-root": {
+                                  bgcolor: "#CD5D4C",
+                                },
+                                "&.MuiButtonBase-root:hover": {
+                                  bgcolor: "red",
+                                },
+                              }}
                             >
                               Remove
                             </Button>
@@ -236,6 +250,8 @@ export default function NewRecipe() {
                             type="button"
                             onClick={handleOptionAdd}
                             sx={{
+                              mt: 1,
+                              width: "180px",
                               "&.MuiButtonBase-root": {
                                 bgcolor: "#2C87B5",
                               },
@@ -269,6 +285,8 @@ export default function NewRecipe() {
                       currentUser?.userName === "demouser1" ? true : false
                     }
                     sx={{
+                      mt: 2,
+                      mb: 2,
                       "&.MuiButtonBase-root": {
                         bgcolor: "#6A9B6B",
                       },

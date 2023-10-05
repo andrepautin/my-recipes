@@ -119,6 +119,7 @@ export default function SignUp() {
                         value={formData?.[option]}
                         onChange={handleChange}
                         required={true}
+                        sx={{ bgcolor: "#F6E6B4" }}
                       />
                     </Box>
                   </Grid>
@@ -134,27 +135,52 @@ export default function SignUp() {
               }}
             >
               <Button
+                variant="contained"
                 sx={{
-                  width: "150px",
-                  "&.MuiButton-root:hover": {
-                    color: "white",
-                    backgroundColor: "transparent",
+                  width: "165px",
+                  "&.MuiButtonBase-root": {
+                    bgcolor: "#6A9B6B",
                   },
+                  "&.MuiButtonBase-root:hover": {
+                    bgcolor: "green",
+                  },
+                  mb: 1,
                 }}
                 type="submit"
               >
                 Submit
               </Button>
               <Button
+                variant="contained"
                 sx={{
-                  width: "150px",
-                  "&.MuiButton-root:hover": {
-                    color: "white",
-                    backgroundColor: "transparent",
+                  width: "165px",
+                  "&.MuiButtonBase-root": {
+                    bgcolor: "#2C87B5",
                   },
+                  "&.MuiButtonBase-root:hover": {
+                    bgcolor: "#0C6D9E",
+                  },
+                  mb: 1,
                 }}
               >
                 <Link href="/login">Back to Login</Link>
+              </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  width: "165px",
+                  "&.MuiButtonBase-root": {
+                    bgcolor: "#2C87B5",
+                  },
+                  "&.MuiButtonBase-root:hover": {
+                    bgcolor: "#0C6D9E",
+                  },
+                  mb: 1,
+                }}
+              >
+                <Link href={{ pathname: "/login", name: "demo" }}>
+                  Demo Login
+                </Link>
               </Button>
             </Box>
           </Paper>

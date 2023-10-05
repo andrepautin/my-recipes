@@ -21,6 +21,7 @@ import {
   Paper,
   Select,
   TextField,
+  TextareaAutosize,
   Tooltip,
 } from "@mui/material";
 import CustomLoading from "@/app/components/customloading";
@@ -145,6 +146,7 @@ export default function EditRecipe({ params }) {
               justifyContent: "center",
               bgcolor: "#F4BF64",
               mt: 3,
+              mb: 3,
               width: "70%",
               minWidth: "300px",
               maxWidth: "600px",
@@ -167,7 +169,7 @@ export default function EditRecipe({ params }) {
                     <FormLabel>
                       {option[0].toUpperCase() + option.slice(1).toLowerCase()}
                     </FormLabel>
-                    <Box>
+                    <Box sx={{ mt: 1 }}>
                       {option === "name" ? (
                         <TextField
                           name={option}
@@ -175,6 +177,7 @@ export default function EditRecipe({ params }) {
                           value={formData.name}
                           onChange={handleChange}
                           required
+                          sx={{ bgcolor: "white" }}
                         />
                       ) : (
                         <FormControl>
@@ -187,7 +190,7 @@ export default function EditRecipe({ params }) {
                                 ? formData.type
                                 : formData.mealType
                             }
-                            sx={{ minWidth: "194px" }}
+                            sx={{ bgcolor: "white", minWidth: "194px", mt: 1 }}
                           >
                             {option === "type"
                               ? TYPE_OPTIONS.map((t) => (
@@ -225,8 +228,8 @@ export default function EditRecipe({ params }) {
                     </FormLabel>
                     <Box>
                       {formData[option].map((ing, index) => (
-                        <Box key={index}>
-                          <TextField
+                        <Box key={index} sx={{ display: "flex", mt: 1 }}>
+                          <TextareaAutosize
                             name={option}
                             type="text"
                             value={formData[option][index]}
@@ -237,6 +240,18 @@ export default function EditRecipe({ params }) {
                             <Button
                               name={option}
                               onClick={(e) => handleRemoveItem(e, index)}
+                              variant="contained"
+                              sx={{
+                                width: "75px",
+                                maxHeight: "20px",
+                                ml: 1,
+                                "&.MuiButtonBase-root": {
+                                  bgcolor: "#CD5D4C",
+                                },
+                                "&.MuiButtonBase-root:hover": {
+                                  bgcolor: "red",
+                                },
+                              }}
                             >
                               Remove
                             </Button>
@@ -245,9 +260,20 @@ export default function EditRecipe({ params }) {
                       ))}
                       <Box>
                         <Button
+                          variant="contained"
                           name={option}
                           type="button"
                           onClick={handleOptionAdd}
+                          sx={{
+                            width: "180px",
+                            mt: 1,
+                            "&.MuiButtonBase-root": {
+                              bgcolor: "#2C87B5",
+                            },
+                            "&.MuiButtonBase-root:hover": {
+                              bgcolor: "#0C6D9E",
+                            },
+                          }}
                         >
                           Add{" "}
                           {option[0].toUpperCase() +
@@ -267,7 +293,19 @@ export default function EditRecipe({ params }) {
               >
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <Button
+                    variant="contained"
                     type="submit"
+                    sx={{
+                      width: "165px",
+                      "&.MuiButtonBase-root": {
+                        bgcolor: "#6A9B6B",
+                      },
+                      "&.MuiButtonBase-root:hover": {
+                        bgcolor: "green",
+                      },
+                      mb: 2,
+                      mt: 2,
+                    }}
                     disabled={
                       currentUser?.userName === "demouser1" ? true : false
                     }

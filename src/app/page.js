@@ -30,20 +30,29 @@ export default function Home() {
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "center", m: 2 }}>
           <Button
+            variant="contained"
             sx={{
-              "&.MuiButton-root:hover": {
-                color: "white",
-                backgroundColor: "transparent",
+              width: "100px",
+              "&.MuiButtonBase-root": {
+                bgcolor: "#2C87B5",
               },
+              "&.MuiButtonBase-root:hover": {
+                bgcolor: "#0C6D9E",
+              },
+              mr: 1,
             }}
           >
             <Link href={{ pathname: "/login" }}>Login</Link>
           </Button>
           <Button
+            variant="contained"
             sx={{
-              "&.MuiButton-root:hover": {
-                color: "white",
-                backgroundColor: "transparent",
+              width: "100px",
+              "&.MuiButtonBase-root": {
+                bgcolor: "#2C87B5",
+              },
+              "&.MuiButtonBase-root:hover": {
+                bgcolor: "#0C6D9E",
               },
             }}
           >
@@ -51,11 +60,18 @@ export default function Home() {
           </Button>
         </Box>
         <Button
+          variant="contained"
           sx={{
-            "&.MuiButton-root:hover": {
-              color: "white",
-              backgroundColor: "transparent",
+            width: "100px",
+            "&.MuiButtonBase-root": {
+              bgcolor: "#2C87B5",
             },
+            "&.MuiButtonBase-root:hover": {
+              bgcolor: "#0C6D9E",
+            },
+            mr: "auto",
+            ml: "auto",
+            mb: 2,
           }}
         >
           <Link

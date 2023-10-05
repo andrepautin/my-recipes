@@ -46,6 +46,7 @@ export default async function Dashboard() {
           justifyContent: "center",
           bgcolor: "#F4BF64",
           mt: 3,
+          mb: 3,
           // width: "70%",
           minWidth: "300px",
           maxWidth: "600px",
