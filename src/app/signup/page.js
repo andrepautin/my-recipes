@@ -83,6 +83,7 @@ export default function SignUp() {
               justifyContent: "center",
               bgcolor: "#F4BF64",
               mt: 3,
+              mb: 3,
               width: "70%",
               minWidth: "300px",
               maxWidth: "600px",
@@ -178,7 +179,7 @@ export default function SignUp() {
                   mb: 1,
                 }}
               >
-                <Link href={{ pathname: "/login", name: "demo" }}>
+                <Link href={{ pathname: "/login", query: { name: "demo" } }}>
                   Demo Login
                 </Link>
               </Button>
