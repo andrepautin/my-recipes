@@ -1,6 +1,6 @@
 export default function IngredientsList({ ingredients }) {
   return (
-    <div>
+    <div className="mb-2">
       <h1 className="text-xl ml-3">Ingredients</h1>
       <ul className="list-disc ml-10">
         {ingredients.map((i) => (

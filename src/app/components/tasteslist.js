@@ -1,12 +1,15 @@
+import { Box, Typography } from "@mui/material";
+
 export default function TastesList({ tastes }) {
   return (
-    <div>
-      <h1 className="text-xl ml-3">Tastes</h1>
-      <ul className="list-disc ml-10">
-        {tastes.map((t) => (
-          <li key={t}>{t}</li>
-        ))}
-      </ul>
-    </div>
+    <Box sx={{ display: "flex" }}>
+      <Typography>{"Tastes:"}</Typography>
+      {tastes.map((t, index) => (
+        <Typography key={t}>
+          &nbsp;
+          {t + `${index !== tastes.length - 1 ? `${","}` : `${""}`}`}
+        </Typography>
+      ))}
+    </Box>
   );
 }

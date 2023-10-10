@@ -2,6 +2,7 @@ import DeleteRecipe from "@/app/components/deleterecipe/page";
 import IngredientsList from "@/app/components/ingredientslist";
 import InstructionsList from "@/app/components/instructionslist";
 import TastesList from "@/app/components/tasteslist";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import axios from "axios";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -30,20 +31,62 @@ export default async function RecipeDetail({ params }) {
   }
 
   return (
-    <div>
-      <Link href={`/recipe/${recipe?.id}/edit`}>Edit Recipe</Link>
-      <h1 className="text-5xl">{recipe?.name}</h1>
-      {date && <h1 className="text-xl mb-5">Created on: {date}</h1>}
-      <h1>Type: {recipe?.type}</h1>
-      <h1>Time: {recipe?.mealType}</h1>
-      <TastesList tastes={recipe?.tastes} />
-      <IngredientsList ingredients={recipe?.ingredients} />
-      <InstructionsList instructions={recipe?.instructions} />
-      <DeleteRecipe
-        userId={currentUser?.id}
-        recipeId={recipe?.id}
-        currentUser={currentUser}
-      />
-    </div>
+    <Box sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
+      <Paper
+        elevation={24}
+        sx={{
+          bgcolor: "#F4BF64",
+          width: "70%",
+          minWidth: "300px",
+          maxWidth: "600px",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h2">{recipe?.name}</Typography>
+          {date && <Typography>Created on: {date}</Typography>}
+        </Box>
+        <Box sx={{ ml: 2, mb: 2, mt: 2 }}>
+          <Typography>Type: {recipe?.type}</Typography>
+          <Typography>Time: {recipe?.mealType}</Typography>
+          <TastesList tastes={recipe?.tastes} />
+        </Box>
+        <Box sx={{ ml: 2, mb: 2 }}>
+          <IngredientsList ingredients={recipe?.ingredients} />
+          <InstructionsList instructions={recipe?.instructions} />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            variant="contained"
+            sx={{
+              width: "150px",
+              "&.MuiButton-root": {
+                backgroundColor: "#E2CF21",
+                ":hover": { backgroundColor: "#B7A717" },
+              },
+              my: 2,
+            }}
+          >
+            <Link href={`/recipe/${recipe?.id}/edit`}>Edit Recipe</Link>
+          </Button>
+          <DeleteRecipe
+            userId={currentUser?.id}
+            recipeId={recipe?.id}
+            currentUser={currentUser}
+          />
+        </Box>
+      </Paper>
+    </Box>
   );
 }

@@ -45,7 +45,16 @@ export default function DeleteRecipe({ userId, recipeId, currentUser }) {
           <Button
             onClick={handleDeleteRecipe}
             type="button"
+            variant="contained"
             disabled={currentUser?.userName === "demouser1" ? true : false}
+            sx={{
+              width: "150px",
+              "&.MuiButtonBase-root": {
+                bgcolor: "#CD5D4C",
+                ":hover": { bgcolor: "red" },
+              },
+              mb: 2,
+            }}
           >
             Delete Recipe
           </Button>
