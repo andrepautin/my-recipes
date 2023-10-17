@@ -136,19 +136,19 @@ export default function NewRecipe() {
     if (error) {
       console.log(error);
     }
-    if (file) {
-      // check first if non-heic
-      // convert to jpg if needed
+    if (file && recipe) {
       const imgSrc = await uploadFileAWS(recipe?.id);
       // find way to get just url domain
+      console.log("HOST--->", window.location.hostname);
       console.log("SRC RETURNED--->", imgSrc);
-      await axios.put(
+      const uploadImageResult = await axios.put(
         `/api/${currentUser?.id}/recipes/${recipe?.id}`,
         { imgSrc },
         { headers }
       );
-    }
-    if (recipe) {
+      console.log("IMG RES--->", uploadImageResult);
+      router.push(`/recipe/${recipe.id}`);
+    } else {
       router.push(`/recipe/${recipe.id}`);
     }
   };
