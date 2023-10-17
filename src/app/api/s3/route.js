@@ -1,6 +1,7 @@
 import S3 from "aws-sdk/clients/s3";
 import { NextResponse } from "next/server";
 export async function POST(req) {
+  // create dev and prod buckets
   const s3 = new S3({
     region: process.env.AWS_REGION,
     accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -15,10 +16,7 @@ export async function POST(req) {
 
   try {
     const data = await req.json();
-    console.log("REQ DATA--->", data);
     const { name, type } = data;
-    console.log("filename--->", name);
-    console.log("filetype--->", type);
 
     const fileParams = {
       Bucket: process.env.BUCKET_NAME,

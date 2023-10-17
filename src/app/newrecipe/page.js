@@ -60,22 +60,17 @@ export default function NewRecipe() {
 
   // can move out of component
   const uploadFileAWS = async (recipeId) => {
-    console.log("IN UPLOAD FILE FN");
     let { data } = await axios.post("/api/s3", {
-      name: recipeId + currentUser.id,
+      name: currentUser.userName + recipeId + currentUser.id,
       type: file.type,
     });
-    console.log("DATA FROM POST--->", data);
     const url = await data.url;
-    console.log("S3 URL--->", url);
-    console.log("FILE TYPE--->", file.type);
     const putImgRes = await axios.put(url, file, {
       headers: {
         "Content-type": file.type,
         "Access-Control-Allow-Origin": "*",
       },
     });
-    console.log("PUT IMG RES--->", putImgRes);
     setFile(null);
     return url;
   };
@@ -144,7 +139,6 @@ export default function NewRecipe() {
         { headers }
       );
       setLoading(false);
-      console.log("IMG RES--->", uploadImageResult);
       router.push(`/recipe/${recipe.id}`);
     } else {
       setLoading(false);
