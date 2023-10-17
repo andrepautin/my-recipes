@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Paper } from "@mui/material";
-import RecipeCard from "./recipecard/page";
+import RecipeCard from "./recipecard/recipecard";
 
 export default function RecipeCardList({ recipes }) {
   return (

@@ -1,7 +1,7 @@
 "use client";
 import { Card, CardContent, Paper, Tooltip, Typography } from "@mui/material";
 import Link from "next/link";
-import { recipeImages } from "../../images/recipeimages";
+import { recipeImages } from "../images/recipeimages";
 import Image from "next/image";
 const BUCKET_BASE_URL = "https://my-recipes-images.s3.us-west-1.amazonaws.com/";
 export default function RecipeCard({ recipe }) {
