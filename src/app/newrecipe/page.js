@@ -69,12 +69,13 @@ export default function NewRecipe() {
     const url = await data.url;
     console.log("S3 URL--->", url);
     console.log("FILE TYPE--->", file.type);
-    await axios.put(url, file, {
+    const putImgRes = await axios.put(url, file, {
       headers: {
         "Content-type": file.type,
         "Access-Control-Allow-Origin": "*",
       },
     });
+    console.log("PUT IMG RES--->", putImgRes);
     setFile(null);
     return url;
   };
@@ -130,7 +131,6 @@ export default function NewRecipe() {
       formData,
       { headers }
     );
-    setLoading(false);
     const { recipe, error } = response.data;
     console.log("R--->", recipe);
     if (error) {
@@ -138,17 +138,16 @@ export default function NewRecipe() {
     }
     if (file && recipe) {
       const imgSrc = await uploadFileAWS(recipe?.id);
-      // find way to get just url domain
-      console.log("HOST--->", window.location.hostname);
-      console.log("SRC RETURNED--->", imgSrc);
       const uploadImageResult = await axios.put(
         `/api/${currentUser?.id}/recipes/${recipe?.id}`,
         { imgSrc },
         { headers }
       );
+      setLoading(false);
       console.log("IMG RES--->", uploadImageResult);
       router.push(`/recipe/${recipe.id}`);
     } else {
+      setLoading(false);
       router.push(`/recipe/${recipe.id}`);
     }
   };
