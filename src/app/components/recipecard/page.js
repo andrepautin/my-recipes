@@ -1,7 +1,9 @@
+"use client";
 import { Card, CardContent, Paper, Tooltip, Typography } from "@mui/material";
 import Link from "next/link";
-import { recipeImages } from "../images/recipeimages";
-
+import { recipeImages } from "../../images/recipeimages";
+import Image from "next/image";
+const BUCKET_BASE_URL = "https://my-recipes-images.s3.us-west-1.amazonaws.com/";
 export default function RecipeCard({ recipe }) {
   return (
     <Link href={`/recipe/${recipe?.id}`}>
@@ -27,11 +29,13 @@ export default function RecipeCard({ recipe }) {
             m: 1,
             mt: 0,
             ":hover": { opacity: 0.5 },
-            backgroundImage: `url('${
-              recipe?.mealType === "any"
-                ? recipeImages?.any
-                : recipeImages[recipe?.mealType][recipe?.type]
-            }')`,
+            backgroundImage: recipe?.imgSrc
+              ? `url('${BUCKET_BASE_URL + recipe?.id + recipe?.userId}')`
+              : `url('${
+                  recipe?.mealType === "any"
+                    ? recipeImages?.any
+                    : recipeImages[recipe?.mealType][recipe?.type]
+                }')`,
             backgroundSize: "cover",
           }}
         ></Paper>

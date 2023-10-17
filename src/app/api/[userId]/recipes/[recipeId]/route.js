@@ -40,6 +40,7 @@ export async function POST(req, { params }) {
 export async function PUT(req, { params }) {
   try {
     const updates = await req.json();
+    console.log("UPDATES IMGSRC--->", updates);
     const headersList = headers();
     const { tokenError } = await validateToken(headersList);
     if (tokenError) throw new Error(tokenError);

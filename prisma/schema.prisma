@@ -27,4 +27,5 @@ model Recipe {
   userId       String?   @db.ObjectId
   dateCreated  DateTime?
   dateUpdated  DateTime?
+  imgSrc       String?
 }

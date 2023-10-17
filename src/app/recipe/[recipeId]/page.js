@@ -5,6 +5,7 @@ import TastesList from "@/app/components/tasteslist";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import axios from "axios";
 import { cookies } from "next/headers";
+import Image from "next/image";
 import Link from "next/link";
 
 async function getRecipe({ recipeId, userId, headers }) {
@@ -29,7 +30,7 @@ export default async function RecipeDetail({ params }) {
   if (date) {
     date = new Date(date).toLocaleDateString();
   }
-
+  console.log("ENV DETAILS--->", process.env.BUCKET_BASE_URL);
   return (
     <Box sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       <Paper
@@ -59,6 +60,12 @@ export default async function RecipeDetail({ params }) {
         <Box sx={{ ml: 2, mb: 2 }}>
           <IngredientsList ingredients={recipe?.ingredients} />
           <InstructionsList instructions={recipe?.instructions} />
+          <Image
+            src={process.env.BUCKET_BASE_URL + recipe?.id + recipe?.userId}
+            alt="AWS image"
+            width={200}
+            height={150}
+          />
         </Box>
         <Box
           sx={{

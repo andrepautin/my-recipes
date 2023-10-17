@@ -12,6 +12,7 @@ import {
   FormControl,
   FormLabel,
   Grid,
+  Input,
   MenuItem,
   Paper,
   Select,
@@ -19,6 +20,7 @@ import {
   TextareaAutosize,
   Tooltip,
 } from "@mui/material";
+
 import CustomLoading from "../components/customloading";
 
 export const FORM_SINGLE_OPTIONS = ["name", "type", "mealType"];
@@ -47,9 +49,35 @@ export default function NewRecipe() {
     mealType: MEAL_TYPE_OPTIONS[0],
   });
   const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState();
 
   const { handleFormChange } = useHelper();
   const router = useRouter();
+
+  const selectFile = (evt) => {
+    setFile(evt.target.files[0]);
+  };
+
+  // can move out of component
+  const uploadFileAWS = async (recipeId) => {
+    console.log("IN UPLOAD FILE FN");
+    let { data } = await axios.post("/api/s3", {
+      name: recipeId + currentUser.id,
+      type: file.type,
+    });
+    console.log("DATA FROM POST--->", data);
+    const url = await data.url;
+    console.log("S3 URL--->", url);
+    console.log("FILE TYPE--->", file.type);
+    await axios.put(url, file, {
+      headers: {
+        "Content-type": file.type,
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    setFile(null);
+    return url;
+  };
 
   const handleOptionAdd = (evt) => {
     evt.preventDefault();
@@ -108,6 +136,18 @@ export default function NewRecipe() {
     if (error) {
       console.log(error);
     }
+    if (file) {
+      // check first if non-heic
+      // convert to jpg if needed
+      const imgSrc = await uploadFileAWS(recipe?.id);
+      // find way to get just url domain
+      console.log("SRC RETURNED--->", imgSrc);
+      await axios.put(
+        `/api/${currentUser?.id}/recipes/${recipe?.id}`,
+        { imgSrc },
+        { headers }
+      );
+    }
     if (recipe) {
       router.push(`/recipe/${recipe.id}`);
     }
@@ -136,6 +176,13 @@ export default function NewRecipe() {
               maxWidth: "600px",
             }}
           >
+            <FormLabel sx={{ mt: 2, ml: 2 }}>Upload Recipe Image</FormLabel>
+            <input
+              className="ml-4"
+              type="file"
+              accept="image/jpeg, image/png, image/jpg"
+              onChange={(evt) => selectFile(evt)}
+            />
             <FormControl onSubmit={handleSubmit}>
               {FORM_SINGLE_OPTIONS.map((option) => (
                 <Grid
