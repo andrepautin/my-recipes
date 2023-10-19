@@ -37,6 +37,8 @@ export default function EditRecipe({ params }) {
     mealType: [],
   });
   const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState();
+
   const recipeId = params.recipeId;
   useEffect(() => {
     async function getRecipe() {
@@ -65,6 +67,26 @@ export default function EditRecipe({ params }) {
 
   const { handleFormChange } = useHelper();
   const router = useRouter();
+
+  const selectFile = (evt) => {
+    setFile(evt.target.files[0]);
+  };
+
+  const uploadFileAWS = async (recipeId) => {
+    let { data } = await axios.post("/api/s3", {
+      name: recipeId + "-" + currentUser.id,
+      type: file.type,
+    });
+    const url = await data.url;
+    const putImgRes = await axios.put(url, file, {
+      headers: {
+        "Content-type": file.type,
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    setFile(null);
+    return url;
+  };
 
   const handleOptionAdd = (evt) => {
     evt.preventDefault();
@@ -123,9 +145,18 @@ export default function EditRecipe({ params }) {
       console.log(error);
       // need error handling here with alerts
     }
-    if (recipe) {
-      router.refresh();
-      router.push(`/recipe/${recipeId}`);
+    if (file && recipe) {
+      const imgSrc = await uploadFileAWS(recipe?.id);
+      const uploadImageResult = await axios.put(
+        `/api/${currentUser?.id}/recipes/${recipe?.id}`,
+        { imgSrc },
+        { headers }
+      );
+      setLoading(false);
+      router.push(`/recipe/${recipe.id}`);
+    } else {
+      setLoading(false);
+      router.push(`/recipe/${recipe.id}`);
     }
   };
   return (
@@ -152,6 +183,13 @@ export default function EditRecipe({ params }) {
               maxWidth: "600px",
             }}
           >
+            <FormLabel sx={{ mt: 2, ml: 2 }}>Upload Recipe Image</FormLabel>
+            <input
+              className="ml-4"
+              type="file"
+              accept="image/jpeg, image/png, image/jpg"
+              onChange={(evt) => selectFile(evt)}
+            />
             <FormControl onSubmit={handleSubmit}>
               {FORM_SINGLE_OPTIONS.map((option) => (
                 <Grid

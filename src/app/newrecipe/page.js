@@ -61,7 +61,7 @@ export default function NewRecipe() {
   // can move out of component
   const uploadFileAWS = async (recipeId) => {
     let { data } = await axios.post("/api/s3", {
-      name: currentUser.userName + recipeId + currentUser.id,
+      name: recipeId + "-" + currentUser.id,
       type: file.type,
     });
     const url = await data.url;

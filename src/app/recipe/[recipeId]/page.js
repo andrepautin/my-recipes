@@ -60,12 +60,16 @@ export default async function RecipeDetail({ params }) {
         <Box sx={{ ml: 2, mb: 2 }}>
           <IngredientsList ingredients={recipe?.ingredients} />
           <InstructionsList instructions={recipe?.instructions} />
-          <Image
-            src={process.env.BUCKET_BASE_URL + recipe?.id + recipe?.userId}
-            alt="AWS image"
-            width={200}
-            height={150}
-          />
+          {recipe?.imgSrc && (
+            <Image
+              src={
+                process.env.BUCKET_BASE_URL + recipe?.id + "-" + recipe?.userId
+              }
+              alt="AWS image"
+              width={200}
+              height={150}
+            />
+          )}
         </Box>
         <Box
           sx={{

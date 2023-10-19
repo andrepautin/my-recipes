@@ -31,7 +31,7 @@ export default function RecipeCard({ recipe }) {
             mt: 0,
             ":hover": { opacity: 0.5 },
             backgroundImage: recipe?.imgSrc
-              ? `url('${BUCKET_BASE_URL + recipe?.id + recipe?.userId}')`
+              ? `url('${BUCKET_BASE_URL + recipe?.id + "-" + recipe?.userId}')`
               : `url('${
                   recipe?.mealType === "any"
                     ? recipeImages?.any

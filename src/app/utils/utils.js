@@ -28,5 +28,21 @@ export const useHelper = () => {
     });
   };
 
-  return { handleFormChange, handleLogout };
+  const uploadFileAWS = async (userName, recipeId, userId) => {
+    let { data } = await axios.post("/api/s3", {
+      name: userName + recipeId + userId,
+      type: file.type,
+    });
+    const url = await data.url;
+    const putImgRes = await axios.put(url, file, {
+      headers: {
+        "Content-type": file.type,
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    setFile(null);
+    return url;
+  };
+
+  return { handleFormChange, handleLogout, uploadFileAWS };
 };
