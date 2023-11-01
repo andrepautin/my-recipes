@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { currentUserContext } from "../context/userContext";
 import { useRouter } from "next/navigation";
 import { deleteCookie } from "cookies-next";
+import axios from "axios";
 
 export const useHelper = () => {
   const [currentUser, setCurrentUser] = useContext(currentUserContext);
@@ -11,6 +12,7 @@ export const useHelper = () => {
 
   const handleLogout = () => {
     deleteCookie("currentUser");
+    // get all cookies and delete each
     deleteCookie("token");
     setCurrentUser();
     router.push("/");
@@ -28,9 +30,9 @@ export const useHelper = () => {
     });
   };
 
-  const uploadFileAWS = async (userName, recipeId, userId) => {
+  const uploadFileAWS = async (recipeId, userId) => {
     let { data } = await axios.post("/api/s3", {
-      name: userName + recipeId + userId,
+      name: recipeId + "-" + userId,
       type: file.type,
     });
     const url = await data.url;
