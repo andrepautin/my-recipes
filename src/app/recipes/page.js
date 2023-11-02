@@ -6,11 +6,13 @@ import { getCookie } from "cookies-next";
 import { currentUserContext } from "../context/userContext";
 import {
   Box,
+  Button,
   FormLabel,
   IconButton,
   MenuItem,
   Paper,
   Select,
+  TextField,
   Typography,
   useMediaQuery,
 } from "@mui/material";
@@ -29,6 +31,7 @@ export default function Recipes() {
   const [filteredRecipes, setFilteredRecipes] = useState();
   const [filterByType, setFilterByType] = useState("None");
   const [filterByMealType, setFilterByMealType] = useState("None");
+  const [search, setSearch] = useState("");
 
   const isMinWidth = useMediaQuery("(min-width:725px)");
 
@@ -122,27 +125,33 @@ export default function Recipes() {
   }, [sortDirection, allRecipes, filteredRecipes, sortBy]);
 
   useEffect(() => {
+    let filtered;
     if (filterByType === "None" && filterByMealType === "None") {
       console.log("NO FILTERS");
-      setFilteredRecipes();
     } else if (filterByType !== "None" && filterByMealType !== "None") {
-      const filtered = allRecipes?.filter(
+      filtered = allRecipes?.filter(
         (recipe) =>
           recipe.type === filterByType && recipe.mealType === filterByMealType
       );
-      setFilteredRecipes(filtered);
     } else if (filterByType !== "None") {
       console.log("TYPE FILTER");
-      setFilteredRecipes(
-        allRecipes?.filter((recipe) => recipe.type === filterByType)
-      );
+      filtered = allRecipes?.filter((recipe) => recipe.type === filterByType);
     } else {
       console.log("MEAL TYPE FILTER");
-      setFilteredRecipes(
-        allRecipes?.filter((recipe) => recipe.mealType === filterByMealType)
+      filtered = allRecipes?.filter(
+        (recipe) => recipe.mealType === filterByMealType
       );
     }
-  }, [allRecipes, filterByType, filterByMealType]);
+
+    if (search !== "") {
+      filtered
+        ? (filtered = filtered?.filter((f) => f.name.includes(search)))
+        : (filtered = allRecipes?.filter((r) => r.name.includes(search)));
+    }
+
+    console.log("FILTERED SEARCH--->", filtered);
+    filtered ? setFilteredRecipes(filtered) : setFilteredRecipes();
+  }, [allRecipes, filterByType, filterByMealType, search]);
 
   const handleSortDirection = (evt) => {
     evt.preventDefault();
@@ -161,96 +170,143 @@ export default function Recipes() {
       : setFilterByMealType(value);
   };
 
+  const handleResetFilters = (evt) => {
+    evt.preventDefault();
+    setSearch("");
+    setFilterByType("None");
+    setFilterByMealType("None");
+    setSortBy("Date");
+  };
+
   return (
-    // create listitem component for all recipes list to render (delete, edit, add functionalities/ description?)
     // move filter logic to utils and pass filters as props
-    // add search bar to search by name
-    // add filter reset to clear search, type filter and mealtype filter
-    <Box sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
-      <Paper
-        elevation={24}
-        sx={{
-          bgcolor: "#F4BF64",
-          minWidth: 300,
-          maxWidth: 1000,
-          width: isMinWidth ? "70%" : "100%",
-        }}
-      >
-        <Box>
-          {allRecipes?.length > 0 && (
-            <Box sx={{ display: "flex" }}>
-              <IconButton
-                onClick={handleSortDirection}
-                sx={{ p: 0, height: 25 }}
+    <Box
+      sx={{
+        mt: 5,
+        marginLeft: "auto",
+        marginRight: "auto",
+        minWidth: 300,
+        width: isMinWidth ? "70%" : "100%",
+        maxWidth: 600,
+      }}
+    >
+      {allRecipes && (
+        <Paper
+          elevation={24}
+          sx={{
+            bgcolor: "#F4BF64",
+            width: "100%",
+          }}
+        >
+          <Box>
+            {allRecipes?.length > 0 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                }}
               >
-                <ImportExport />
-                <Typography>
-                  {sortDirection === "asc" ? "ASC" : "DESC"}
-                </Typography>
-              </IconButton>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <FormLabel sx={{ textAlign: "center" }}>Sort By</FormLabel>
-                <Select
-                  name="sortBy"
-                  onChange={handleFilterChange}
-                  required
-                  value={sortBy}
-                  sx={{
-                    bgcolor: "white",
-                    m: 1,
-                    minWidth: isMinWidth ? 110 : 96,
-                    height: 40,
-                  }}
-                >
-                  {SORT_OPTIONS.map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Box>
-              {FILTER_BY_OPTIONS.map((filter) => (
-                <Box
-                  key={filter}
-                  sx={{ display: "flex", flexDirection: "column" }}
-                >
-                  <FormLabel sx={{ textAlign: "center" }}>
-                    Filter{" "}
-                    {filter[0].toUpperCase() + filter.slice(1).toLowerCase()}
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <IconButton onClick={handleSortDirection} sx={{ height: 25 }}>
+                    <ImportExport />
+                    <Typography sx={{ fontSize: !isMinWidth && "small" }}>
+                      {sortDirection === "asc" ? "ASC" : "DESC"}
+                    </Typography>
+                  </IconButton>
+                  <TextField
+                    name="search"
+                    size="small"
+                    sx={{
+                      backgroundColor: "white",
+                      maxWidth: 130,
+                      mt: isMinWidth && 1,
+                    }}
+                    placeholder="Search"
+                    onChange={(evt) => setSearch(evt.target.value)}
+                    value={search}
+                  />
+                </Box>
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <FormLabel
+                    sx={{
+                      textAlign: "center",
+                      fontSize: !isMinWidth && "small",
+                    }}
+                  >
+                    Sort By
                   </FormLabel>
                   <Select
-                    name={filter === "type" ? "type" : "mealType"}
+                    name="sortBy"
                     onChange={handleFilterChange}
                     required
-                    value={filter === "type" ? filterByType : filterByMealType}
+                    value={sortBy}
                     sx={{
                       bgcolor: "white",
                       m: 1,
-                      minWidth: isMinWidth ? 110 : 96,
+                      minWidth: isMinWidth ? 110 : 76,
                       height: 40,
                     }}
                   >
-                    {filter === "type"
-                      ? ["None", ...TYPE_OPTIONS].map((t) => (
-                          <MenuItem key={t} value={t}>
-                            {t}
-                          </MenuItem>
-                        ))
-                      : ["None", ...MEAL_TYPE_OPTIONS].map((mt) => (
-                          <MenuItem key={mt} value={mt}>
-                            {mt}
-                          </MenuItem>
-                        ))}
+                    {SORT_OPTIONS.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </Box>
-              ))}
+                {FILTER_BY_OPTIONS.map((filter) => (
+                  <Box
+                    key={filter}
+                    sx={{ display: "flex", flexDirection: "column" }}
+                  >
+                    <FormLabel
+                      sx={{
+                        textAlign: "center",
+                        fontSize: !isMinWidth && "small",
+                      }}
+                    >
+                      Filter{" "}
+                      {filter[0].toUpperCase() + filter.slice(1).toLowerCase()}
+                    </FormLabel>
+                    <Select
+                      name={filter === "type" ? "type" : "mealType"}
+                      onChange={handleFilterChange}
+                      required
+                      value={
+                        filter === "type" ? filterByType : filterByMealType
+                      }
+                      sx={{
+                        bgcolor: "white",
+                        m: 1,
+                        minWidth: isMinWidth ? 110 : 76,
+                        height: 40,
+                      }}
+                    >
+                      {filter === "type"
+                        ? ["None", ...TYPE_OPTIONS].map((t) => (
+                            <MenuItem key={t} value={t}>
+                              {t}
+                            </MenuItem>
+                          ))
+                        : ["None", ...MEAL_TYPE_OPTIONS].map((mt) => (
+                            <MenuItem key={mt} value={mt}>
+                              {mt}
+                            </MenuItem>
+                          ))}
+                    </Select>
+                  </Box>
+                ))}
+              </Box>
+            )}
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Button onClick={handleResetFilters}>Reset Filters</Button>
             </Box>
-          )}
-          <AllRecipesList
-            recipes={sortedRecipes ? sortedRecipes : allRecipes}
-          />
-        </Box>
-      </Paper>
+            <AllRecipesList
+              recipes={sortedRecipes ? sortedRecipes : allRecipes}
+            />
+          </Box>
+        </Paper>
+      )}
     </Box>
   );
 }
