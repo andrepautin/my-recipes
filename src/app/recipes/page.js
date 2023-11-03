@@ -145,11 +145,14 @@ export default function Recipes() {
 
     if (search !== "") {
       filtered
-        ? (filtered = filtered?.filter((f) => f.name.includes(search)))
-        : (filtered = allRecipes?.filter((r) => r.name.includes(search)));
+        ? (filtered = filtered?.filter((f) =>
+            f.name.toLowerCase().includes(search.toLowerCase())
+          ))
+        : (filtered = allRecipes?.filter((r) =>
+            r.name.toLowerCase().includes(search.toLowerCase())
+          ));
     }
 
-    console.log("FILTERED SEARCH--->", filtered);
     filtered ? setFilteredRecipes(filtered) : setFilteredRecipes();
   }, [allRecipes, filterByType, filterByMealType, search]);
 
