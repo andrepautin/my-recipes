@@ -91,6 +91,7 @@ export default async function RecipeDetail({ params }) {
           >
             <Link href={`/recipe/${recipe?.id}/edit`}>Edit Recipe</Link>
           </Button>
+          {/* this will end up being a button link like edit */}
           <DeleteRecipe
             userId={currentUser?.id}
             recipeId={recipe?.id}
