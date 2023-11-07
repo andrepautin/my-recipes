@@ -30,6 +30,8 @@ export default async function RecipeDetail({ params }) {
   if (date) {
     date = new Date(date).toLocaleDateString();
   }
+
+  // pull util delete function here and pass headers, recipe details (after confirmation)
   console.log("ENV DETAILS--->", process.env.BUCKET_BASE_URL);
   return (
     <Box sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
@@ -92,6 +94,8 @@ export default async function RecipeDetail({ params }) {
             <Link href={`/recipe/${recipe?.id}/edit`}>Edit Recipe</Link>
           </Button>
           {/* this will end up being a button link like edit */}
+          {/* when delete button clicked, should pop up dialogue to confirm with state and a function should just be called to execute -- NOT OWN PAGE LIKE EDIT */}
+
           <DeleteRecipe
             userId={currentUser?.id}
             recipeId={recipe?.id}

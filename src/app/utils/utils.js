@@ -47,6 +47,7 @@ export const useHelper = () => {
   };
 
   // move delete recipe functionality here and make it a link component within recipe/[recipeId] route
+  // headers can still be retrieved wherever this function is called
 
   return { handleFormChange, handleLogout, uploadFileAWS };
 };

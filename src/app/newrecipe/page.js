@@ -58,7 +58,7 @@ export default function NewRecipe() {
     setFile(evt.target.files[0]);
   };
 
-  // can move out of component
+  // can move out of component and pass needed params (recipeId, currentUser Id, file, and setFile states) -> return just signedUrl
   const uploadFileAWS = async (recipeId) => {
     let { data } = await axios.post("/api/s3", {
       name: recipeId + "-" + currentUser.id,

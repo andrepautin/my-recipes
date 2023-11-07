@@ -4,11 +4,12 @@ import { Box, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
 import { useState, useContext } from "react";
 import { currentUserContext } from "../context/userContext";
-import DeleteRecipe from "./deleterecipe/page";
 
 export default function RecipeListItem({ recipe }) {
   const [currentUser, setCurrentUser] = useContext(currentUserContext);
-  const [deleteClicked, setDeleteClicked] = useState(false);
+
+  // pull util delete function here and pass headers, recipe details (after confirmation)
+  // will have to get headers here somehow
   return (
     // grid style with name, date created, last updated, type and mealtype columns
     // add edit and delete icons
@@ -33,6 +34,7 @@ export default function RecipeListItem({ recipe }) {
           </Link>
         </IconButton>
         {/* delete functionality to be moved and link like edit */}
+        {/* when delete button clicked, should pop up dialogue to confirm with state and a function should just be called to execute -- NOT OWN PAGE LIKE EDIT */}
         {/* <IconButton>
           <Delete>
             <DeleteRecipe
