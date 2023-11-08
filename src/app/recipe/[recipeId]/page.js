@@ -1,8 +1,7 @@
-import DeleteRecipe from "@/app/components/deleterecipe/page";
 import IngredientsList from "@/app/components/ingredientslist";
 import InstructionsList from "@/app/components/instructionslist";
 import TastesList from "@/app/components/tasteslist";
-import { Box, Button, Paper, Typography } from "@mui/material";
+import { Box, Button, Paper, Tooltip, Typography } from "@mui/material";
 import axios from "axios";
 import { cookies } from "next/headers";
 import Image from "next/image";
@@ -31,7 +30,6 @@ export default async function RecipeDetail({ params }) {
     date = new Date(date).toLocaleDateString();
   }
 
-  // pull util delete function here and pass headers, recipe details (after confirmation)
   console.log("ENV DETAILS--->", process.env.BUCKET_BASE_URL);
   return (
     <Box sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
@@ -80,27 +78,59 @@ export default async function RecipeDetail({ params }) {
             alignItems: "center",
           }}
         >
-          <Button
-            variant="contained"
-            sx={{
-              width: "150px",
-              "&.MuiButton-root": {
-                backgroundColor: "#E2CF21",
-                ":hover": { backgroundColor: "#B7A717" },
-              },
-              my: 2,
-            }}
+          <Tooltip
+            title={
+              currentUser?.userName === "demouser1"
+                ? "Edit recipe not available in demo mode"
+                : "Edit Recipe"
+            }
           >
-            <Link href={`/recipe/${recipe?.id}/edit`}>Edit Recipe</Link>
-          </Button>
+            <Button
+              disabled={currentUser?.userName === "demouser1" ? true : false}
+              variant="contained"
+              sx={{
+                width: "150px",
+                "&.MuiButton-root": {
+                  backgroundColor: "#E2CF21",
+                  ":hover": { backgroundColor: "#B7A717" },
+                },
+                my: 2,
+              }}
+            >
+              <Link href={`/recipe/${recipe?.id}/edit`}>Edit Recipe</Link>
+            </Button>
+          </Tooltip>
           {/* this will end up being a button link like edit */}
           {/* when delete button clicked, should pop up dialogue to confirm with state and a function should just be called to execute -- NOT OWN PAGE LIKE EDIT */}
 
-          <DeleteRecipe
+          {/* <DeleteRecipe
             userId={currentUser?.id}
             recipeId={recipe?.id}
             currentUser={currentUser}
-          />
+          /> */}
+          <Tooltip
+            title={
+              currentUser?.userName === "demouser1"
+                ? "Delete recipe not available in demo mode"
+                : "Delete Recipe"
+            }
+          >
+            <Button
+              disabled={currentUser?.userName === "demouser1" ? true : false}
+              variant="contained"
+              sx={{
+                width: "150px",
+                "&.MuiButton-root": {
+                  bgcolor: "#CD5D4C",
+                  ":hover": { bgcolor: "red" },
+                },
+                my: 2,
+              }}
+              type="button"
+            >
+              <Link href={`/recipe/${recipe?.id}/delete`}>Delete Recipe</Link>
+            </Button>
+          </Tooltip>
         </Box>
       </Paper>
     </Box>

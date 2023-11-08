@@ -35,15 +35,11 @@ export default function RecipeListItem({ recipe }) {
         </IconButton>
         {/* delete functionality to be moved and link like edit */}
         {/* when delete button clicked, should pop up dialogue to confirm with state and a function should just be called to execute -- NOT OWN PAGE LIKE EDIT */}
-        {/* <IconButton>
-          <Delete>
-            <DeleteRecipe
-              userId={currentUser?.id}
-              recipeId={recipe?.id}
-              currentUser={currentUser}
-            />
-          </Delete>
-        </IconButton> */}
+        <IconButton>
+          <Link href={`/recipe/${recipe?.id}/delete`}>
+            <Delete />
+          </Link>
+        </IconButton>
       </Box>
     </Box>
   );
