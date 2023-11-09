@@ -39,6 +39,8 @@ export default function EditRecipe({ params }) {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState();
 
+  const { uploadFileAWS } = useHelper();
+
   const recipeId = params.recipeId;
   useEffect(() => {
     async function getRecipe() {
@@ -72,21 +74,7 @@ export default function EditRecipe({ params }) {
     setFile(evt.target.files[0]);
   };
 
-  const uploadFileAWS = async (recipeId) => {
-    let { data } = await axios.post("/api/s3", {
-      name: recipeId + "-" + currentUser.id,
-      type: file.type,
-    });
-    const url = await data.url;
-    const putImgRes = await axios.put(url, file, {
-      headers: {
-        "Content-type": file.type,
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
-    setFile(null);
-    return url;
-  };
+  // optionAdd, change and remove can me moved to utils
 
   const handleOptionAdd = (evt) => {
     evt.preventDefault();
@@ -146,7 +134,12 @@ export default function EditRecipe({ params }) {
       // need error handling here with alerts
     }
     if (file && recipe) {
-      const imgSrc = await uploadFileAWS(recipe?.id);
+      const imgSrc = await uploadFileAWS(
+        recipe?.id,
+        currentUser?.id,
+        setFile,
+        file
+      );
       const uploadImageResult = await axios.put(
         `/api/${currentUser?.id}/recipes/${recipe?.id}`,
         { imgSrc },

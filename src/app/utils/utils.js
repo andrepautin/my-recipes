@@ -30,7 +30,7 @@ export const useHelper = () => {
     });
   };
 
-  const uploadFileAWS = async (recipeId, userId) => {
+  const uploadFileAWS = async (recipeId, userId, setFile, file) => {
     let { data } = await axios.post("/api/s3", {
       name: recipeId + "-" + userId,
       type: file.type,

@@ -51,30 +51,14 @@ export default function NewRecipe() {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState();
 
-  const { handleFormChange } = useHelper();
+  const { handleFormChange, uploadFileAWS } = useHelper();
   const router = useRouter();
 
   const selectFile = (evt) => {
     setFile(evt.target.files[0]);
   };
 
-  // can move out of component and pass needed params (recipeId, currentUser Id, file, and setFile states) -> return just signedUrl
-  const uploadFileAWS = async (recipeId) => {
-    let { data } = await axios.post("/api/s3", {
-      name: recipeId + "-" + currentUser.id,
-      type: file.type,
-    });
-    const url = await data.url;
-    const putImgRes = await axios.put(url, file, {
-      headers: {
-        "Content-type": file.type,
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
-    setFile(null);
-    return url;
-  };
-
+  // optionAdd, change and remove can me moved to utils
   const handleOptionAdd = (evt) => {
     evt.preventDefault();
     const { name, value } = evt.target;
@@ -132,7 +116,12 @@ export default function NewRecipe() {
       console.log(error);
     }
     if (file && recipe) {
-      const imgSrc = await uploadFileAWS(recipe?.id);
+      const imgSrc = await uploadFileAWS(
+        recipe?.id,
+        currentUser?.id,
+        setFile,
+        file
+      );
       const uploadImageResult = await axios.put(
         `/api/${currentUser?.id}/recipes/${recipe?.id}`,
         { imgSrc },
